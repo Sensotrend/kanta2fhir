@@ -1,0 +1,717 @@
+{
+  "resourceType": "Bundle",
+  "id": "70fc8d61-eb32-5623-9685-88f1a1e9ef5f",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/eps/StructureDefinition/bundle-eu-eps"
+    ]
+  },
+  "language": "fi",
+  "identifier": {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:uuid:70fc8d61-eb32-5623-9685-88f1a1e9ef5f"
+  },
+  "type": "document",
+  "timestamp": "2026-01-01T12:00:00+02:00",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:0c65a776-13f3-5aa8-9969-503036d4c8c5",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "0c65a776-13f3-5aa8-9969-503036d4c8c5",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/composition-eu-eps"
+          ]
+        },
+        "language": "fi",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"fi\" xml:lang=\"fi\"><p>Potilasyhteenveto</p><p>Koottu Kanta-palvelun asiakirjoista 2026-01-01</p></div>"
+        },
+        "identifier": {
+          "system": "urn:ietf:rfc:3986",
+          "value": "urn:uuid:0c65a776-13f3-5aa8-9969-503036d4c8c5"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "60591-5",
+              "display": "Patient summary Document"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08"
+        },
+        "date": "2026-01-01T12:00:00+02:00",
+        "author": [
+          {
+            "reference": "urn:uuid:8ddabb88-11c9-51b3-a3c4-5fa596f3e33c"
+          }
+        ],
+        "title": "Potilasyhteenveto",
+        "section": [
+          {
+            "title": "Aktiiviset ongelmat",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "11450-4",
+                  "display": "Problem list - Reported"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Diagnoosi</th><th>Koodi</th><th>Pysyvyys</th><th>Varmuus</th><th>Pvm</th></tr></thead><tbody></tbody></table></div>"
+            },
+            "emptyReason": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/list-empty-reason",
+                  "code": "unavailable",
+                  "display": "Unavailable"
+                }
+              ]
+            }
+          },
+          {
+            "title": "Allergiat ja intoleranssit",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "48765-2",
+                  "display": "Allergies and adverse reactions Document"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Aine</th><th>Reaktio</th><th>Vakavuus</th><th>Huomio</th><th>Pvm</th></tr></thead><tbody></tbody></table></div>"
+            },
+            "emptyReason": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/list-empty-reason",
+                  "code": "unavailable",
+                  "display": "Unavailable"
+                }
+              ]
+            }
+          },
+          {
+            "title": "Lääkitys",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "10160-0",
+                  "display": "History of Medication use Narrative"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Kanta-asiakirjoissa ei ole rakenteista lääkitystietoa.</p><p>Hoitosuunnitelman lääkityslista (vapaa teksti): Lääkityslista 18.12.2024: Seloken tabl 50mg 1 tabl x 2 /vrk p.o Actrapid erillisen ohjeen mukaan</p></div>"
+            },
+            "emptyReason": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/list-empty-reason",
+                  "code": "unavailable",
+                  "display": "Unavailable"
+                }
+              ]
+            }
+          },
+          {
+            "title": "Toimenpiteet",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "47519-4",
+                  "display": "History of Procedures Document"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Toimenpide</th><th>Koodi</th><th>Pvm</th></tr></thead><tbody></tbody></table></div>"
+            },
+            "emptyReason": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/list-empty-reason",
+                  "code": "unavailable",
+                  "display": "Unavailable"
+                }
+              ]
+            }
+          },
+          {
+            "title": "Lääkinnälliset laitteet",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "46264-8",
+                  "display": "History of medical device use"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Ei tietoa lääkinnällisistä laitteista.</p></div>"
+            },
+            "emptyReason": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/list-empty-reason",
+                  "code": "unavailable",
+                  "display": "Unavailable"
+                }
+              ]
+            }
+          },
+          {
+            "title": "Hoitosuunnitelma",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "18776-5",
+                  "display": "Plan of Care Note"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Terveys- ja hoitosuunnitelma 2024-12-18</p><p>Hoidon tarve: Sokeritasapaino huonossa tasapainossa, huomattavaa ylipaino, huono yleiskunto/suorituskyky.</p><p>Hoidon tavoitteet: Sokeritasapaino tulee saada paremmin hallintaan ja insuliiniannostusta pienentämään. Painoa tulee saada laskemaan. Ruokailutottumukset saatava paremmaksi. Likuntaa lisättävä.</p><p>Hoidon toteutus ja keinot: Ravitsemusterapeutin tapaaminen 2 kk välein ruokavalio-ohjeiden antamiseksi ja onnistumisen seuraamiseksi. Fysioterapeutin tapaaminen 1 kk välein liikuntaohjelman suunnttelemiseksi. Diabeteshoitajan vastaanotto 3 kk kuluttua.</p><p>Suunniteltu palvelu: Fysioterapeuttisen kuntoutussuunnitelman toteuttaminen 2024-12-23 - Liikuntaohjelman suunnittelu ja seuranta</p><p>Suunniteltu palvelu: Muu ravitsemusterapianimikkeistön mukainen toimenpide 2024-12-23 - Ruokavalio-ohjeiden antaminen ja toteutumisen seuranta</p></div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:8e8d43a8-8da7-5a62-b21a-17970e34aa14"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "2ed038d4-36cd-5a7a-9594-e90661ea6d08",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/patient-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Potilas Testinen</p><p>Henkilötunnus 051001A937S</p><p>2001-10-05</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:oid:1.2.246.21",
+            "value": "051001A937S"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Testinen",
+            "given": [
+              "Potilas"
+            ]
+          }
+        ],
+        "gender": "male",
+        "birthDate": "2001-10-05"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:63c8cc2d-7639-505f-a142-320375d5e3ef",
+      "resource": {
+        "resourceType": "Goal",
+        "id": "63c8cc2d-7639-505f-a142-320375d5e3ef",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Sokeritasapaino tulee saada paremmin hallintaan ja insuliiniannostusta pienentämään. Painoa tulee saada laskemaan. Ruokailutottumukset saatava paremmaksi. Likuntaa lisättävä.</p></div>"
+        },
+        "lifecycleStatus": "active",
+        "description": {
+          "text": "Sokeritasapaino tulee saada paremmin hallintaan ja insuliiniannostusta pienentämään. Painoa tulee saada laskemaan. Ruokailutottumukset saatava paremmaksi. Likuntaa lisättävä."
+        },
+        "subject": {
+          "reference": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08"
+        },
+        "target": [
+          {
+            "measure": {
+              "coding": [
+                {
+                  "system": "urn:oid:1.2.246.537.6.3.2006",
+                  "code": "1462",
+                  "display": "B -Glukoosi",
+                  "_display": {
+                    "extension": [
+                      {
+                        "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                        "extension": [
+                          {
+                            "url": "lang",
+                            "valueCode": "en"
+                          },
+                          {
+                            "url": "content",
+                            "valueString": "B -Glucose"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                },
+                {
+                  "system": "http://loinc.org",
+                  "code": "15074-8",
+                  "display": "Glucose [Moles/volume] in Blood"
+                }
+              ],
+              "text": "B -Glukoosi"
+            },
+            "detailRange": {
+              "low": {
+                "value": 1,
+                "unit": "mmol/l",
+                "system": "http://unitsofmeasure.org",
+                "code": "mmol/L"
+              },
+              "high": {
+                "value": 10,
+                "unit": "mmol/l",
+                "system": "http://unitsofmeasure.org",
+                "code": "mmol/L"
+              }
+            }
+          },
+          {
+            "measure": {
+              "coding": [
+                {
+                  "system": "urn:oid:1.2.246.537.6.96.2008",
+                  "code": "29463-7",
+                  "display": "Paino"
+                },
+                {
+                  "system": "http://loinc.org",
+                  "code": "29463-7"
+                }
+              ],
+              "text": "Paino"
+            },
+            "detailRange": {
+              "low": {
+                "value": 1,
+                "unit": "kg",
+                "system": "http://unitsofmeasure.org",
+                "code": "kg"
+              },
+              "high": {
+                "value": 150,
+                "unit": "kg",
+                "system": "http://unitsofmeasure.org",
+                "code": "kg"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:095d7122-c3c7-5b96-9509-b81890790dbc",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "095d7122-c3c7-5b96-9509-b81890790dbc",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/organization-obl-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Mämmilän terveyskeskus, Fysioterapiayksikkö</p></div>"
+        },
+        "name": "Mämmilän terveyskeskus, Fysioterapiayksikkö"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:55393265-3642-508b-9150-23531b7d2632",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "55393265-3642-508b-9150-23531b7d2632",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/organization-obl-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>HVA palvelunantaja 1, Neuvola</p></div>"
+        },
+        "name": "HVA palvelunantaja 1, Neuvola"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2aa96ad2-9e06-5c6b-931e-8717e9c72f78",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "2aa96ad2-9e06-5c6b-931e-8717e9c72f78",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/organization-obl-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Mämmilän terveyskeskus, Diabetesvastaanotto</p></div>"
+        },
+        "name": "Mämmilän terveyskeskus, Diabetesvastaanotto"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cb9070cb-cd3a-506e-8bcb-60253266878c",
+      "resource": {
+        "resourceType": "CareTeam",
+        "id": "cb9070cb-cd3a-506e-8bcb-60253266878c",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Mämmilän terveyskeskus, Fysioterapiayksikkö</p><p>HVA palvelunantaja 1, Neuvola</p><p>Mämmilän terveyskeskus, Diabetesvastaanotto</p><p>Fysioterapeutit</p></div>"
+        },
+        "status": "active",
+        "subject": {
+          "reference": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08"
+        },
+        "participant": [
+          {
+            "role": [
+              {
+                "coding": [
+                  {
+                    "system": "urn:oid:1.2.246.537.6.74.2001",
+                    "code": "32261",
+                    "display": "Fysioterapeutit"
+                  }
+                ],
+                "text": "Fysioterapeutit"
+              }
+            ],
+            "member": {
+              "reference": "urn:uuid:095d7122-c3c7-5b96-9509-b81890790dbc"
+            }
+          },
+          {
+            "role": [
+              {
+                "coding": [
+                  {
+                    "system": "urn:oid:1.2.246.537.6.74.2001",
+                    "code": "32269",
+                    "display": "Muut terapeutit"
+                  }
+                ],
+                "text": "Muut terapeutit"
+              }
+            ],
+            "member": {
+              "reference": "urn:uuid:55393265-3642-508b-9150-23531b7d2632"
+            }
+          },
+          {
+            "role": [
+              {
+                "coding": [
+                  {
+                    "system": "urn:oid:1.2.246.537.6.74.2001",
+                    "code": "32311",
+                    "display": "Sairaanhoitajat"
+                  }
+                ],
+                "text": "Sairaanhoitajat"
+              }
+            ],
+            "member": {
+              "reference": "urn:uuid:2aa96ad2-9e06-5c6b-931e-8717e9c72f78"
+            }
+          },
+          {
+            "role": [
+              {
+                "coding": [
+                  {
+                    "system": "urn:oid:1.2.246.537.6.74.2001",
+                    "code": "32261",
+                    "display": "Fysioterapeutit"
+                  }
+                ],
+                "text": "Fysioterapeutit"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:19e2aa75-7ad2-5421-94b0-b5158b899409",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "19e2aa75-7ad2-5421-94b0-b5158b899409",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/practitioner-obl-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Leo Lekuri LL</p></div>"
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Lekuri",
+            "given": [
+              "Leo"
+            ],
+            "suffix": [
+              "LL"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0bf57bf6-ac02-5dee-8bed-b2224e032380",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "0bf57bf6-ac02-5dee-8bed-b2224e032380",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/organization-obl-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Mämmilän terveyskeskus</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.99.9999999.900.1"
+          }
+        ],
+        "name": "Mämmilän terveyskeskus"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:055d8c63-abd4-53ea-adfe-42b5d9357600",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "055d8c63-abd4-53ea-adfe-42b5d9357600",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/eps/StructureDefinition/practitionerrole-obl-eu-eps"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Leo Lekuri LL</p><p>Mämmilän terveyskeskus</p></div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:19e2aa75-7ad2-5421-94b0-b5158b899409"
+        },
+        "organization": {
+          "reference": "urn:uuid:0bf57bf6-ac02-5dee-8bed-b2224e032380"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8e8d43a8-8da7-5a62-b21a-17970e34aa14",
+      "resource": {
+        "resourceType": "CarePlan",
+        "id": "8e8d43a8-8da7-5a62-b21a-17970e34aa14",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Terveys- ja hoitosuunnitelma 2024-12-18</p><p>Hoidon tarve: Sokeritasapaino huonossa tasapainossa, huomattavaa ylipaino, huono yleiskunto/suorituskyky.</p><p>Hoidon tavoitteet: Sokeritasapaino tulee saada paremmin hallintaan ja insuliiniannostusta pienentämään. Painoa tulee saada laskemaan. Ruokailutottumukset saatava paremmaksi. Likuntaa lisättävä.</p><p>Hoidon toteutus ja keinot: Ravitsemusterapeutin tapaaminen 2 kk välein ruokavalio-ohjeiden antamiseksi ja onnistumisen seuraamiseksi. Fysioterapeutin tapaaminen 1 kk välein liikuntaohjelman suunnttelemiseksi. Diabeteshoitajan vastaanotto 3 kk kuluttua.</p><p>Suunniteltu palvelu: Fysioterapeuttisen kuntoutussuunnitelman toteuttaminen 2024-12-23 - Liikuntaohjelman suunnittelu ja seuranta</p><p>Suunniteltu palvelu: Muu ravitsemusterapianimikkeistön mukainen toimenpide 2024-12-23 - Ruokavalio-ohjeiden antaminen ja toteutumisen seuranta</p></div>"
+        },
+        "status": "active",
+        "intent": "plan",
+        "title": "Terveys- ja hoitosuunnitelma",
+        "description": "Hoidon syy: E11.9 Aikuistyypin diabetes ilman komplikaatioita",
+        "subject": {
+          "reference": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08"
+        },
+        "period": {
+          "start": "2024-12-18T12:54:44+02:00"
+        },
+        "created": "2024-12-18T12:54:44+02:00",
+        "author": {
+          "reference": "urn:uuid:055d8c63-abd4-53ea-adfe-42b5d9357600"
+        },
+        "careTeam": [
+          {
+            "reference": "urn:uuid:cb9070cb-cd3a-506e-8bcb-60253266878c"
+          }
+        ],
+        "goal": [
+          {
+            "reference": "urn:uuid:63c8cc2d-7639-505f-a142-320375d5e3ef"
+          }
+        ],
+        "activity": [
+          {
+            "detail": {
+              "code": {
+                "coding": [
+                  {
+                    "system": "urn:oid:1.2.246.537.6.128.2009",
+                    "code": "SPAT1223",
+                    "display": "Fysioterapeuttisen kuntoutussuunnitelman toteuttaminen"
+                  }
+                ],
+                "text": "Fysioterapeuttisen kuntoutussuunnitelman toteuttaminen"
+              },
+              "status": "scheduled",
+              "scheduledPeriod": {
+                "start": "2024-12-23"
+              },
+              "description": "Liikuntaohjelman suunnittelu ja seuranta"
+            }
+          },
+          {
+            "detail": {
+              "code": {
+                "coding": [
+                  {
+                    "system": "urn:oid:1.2.246.537.6.128.2009",
+                    "code": "SPAT1115",
+                    "display": "Muu ravitsemusterapianimikkeistön mukainen toimenpide"
+                  }
+                ],
+                "text": "Muu ravitsemusterapianimikkeistön mukainen toimenpide"
+              },
+              "status": "scheduled",
+              "scheduledPeriod": {
+                "start": "2024-12-23"
+              },
+              "description": "Ruokavalio-ohjeiden antaminen ja toteutumisen seuranta; Aamupäivällä; Pitää olla...; B -Glukoosi 1-7 mmol/l; Paino, mitattu 50- kg"
+            }
+          }
+        ],
+        "note": [
+          {
+            "text": "Hoidon tarve: Sokeritasapaino huonossa tasapainossa, huomattavaa ylipaino, huono yleiskunto/suorituskyky."
+          },
+          {
+            "text": "Toimintakykyyn liittyvä tarve: Yleiskuntoa/suorituskykyä tulee parantaa."
+          },
+          {
+            "text": "Toimintakykyyn liittyvä tavoite: Suorituskyky pyritään saamaan paremmaksi."
+          },
+          {
+            "text": "Tavoitteen asettajat: Potilas, diabeteshoitaja, terveyskeskuksen oma lääkäri yhteisymmärryksessä"
+          },
+          {
+            "text": "Hoidon toteutus ja keinot: Ravitsemusterapeutin tapaaminen 2 kk välein ruokavalio-ohjeiden antamiseksi ja onnistumisen seuraamiseksi. Fysioterapeutin tapaaminen 1 kk välein liikuntaohjelman suunnttelemiseksi. Diabeteshoitajan vastaanotto 3 kk kuluttua."
+          },
+          {
+            "text": "Koordinoiva taho: Diabetes hoitaja, Mämmilän terveyskeskus"
+          },
+          {
+            "text": "Koordinoiva taho: Lisätiedot koordinoivasta tahosta tähän tähän"
+          },
+          {
+            "text": "Diagnoosilista: Diagnoosilista 18.12.2024: I20.1 Angina pectoris E11.9 Aikuistyypin diabetes; ilman komplikaatioita E66.8 Vaikea lihavuus"
+          },
+          {
+            "text": "Lääkityslista: Lääkityslista 18.12.2024: Seloken tabl 50mg 1 tabl x 2 /vrk p.o Actrapid erillisen ohjeen mukaan"
+          },
+          {
+            "text": "Lisätiedot: terveys- ja hoitosuunnitelman mahdolliset potilaan tilaa ja hoitoa kuvaavat lisätiedot vapaamuotoisena tekstinä tähän"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8ddabb88-11c9-51b3-a3c4-5fa596f3e33c",
+      "resource": {
+        "resourceType": "Device",
+        "id": "8ddabb88-11c9-51b3-a3c4-5fa596f3e33c",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>kanta2fhir 0.1.0</p></div>"
+        },
+        "deviceName": [
+          {
+            "name": "kanta2fhir",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "0.1.0"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:60457a32-57a5-5886-a12b-2a644bd518f7",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "60457a32-57a5-5886-a12b-2a644bd518f7",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Converted by kanta2fhir 0.1.0 from 1 Kanta document(s)</p></div>"
+        },
+        "target": [
+          {
+            "reference": "urn:uuid:0c65a776-13f3-5aa8-9969-503036d4c8c5"
+          }
+        ],
+        "recorded": "2026-01-01T12:00:00+02:00",
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "code": "assembler"
+                }
+              ]
+            },
+            "who": {
+              "reference": "urn:uuid:8ddabb88-11c9-51b3-a3c4-5fa596f3e33c"
+            }
+          }
+        ],
+        "entity": [
+          {
+            "role": "source",
+            "what": {
+              "type": "DocumentReference",
+              "identifier": {
+                "system": "urn:ietf:rfc:3986",
+                "value": "urn:oid:1.2.246.10.1.20241218125444.93.2009.1121139519470155"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Kanta CDA → EU FHIR documents: implementation plan
 
-Status: **milestones 1-7 implemented** (2026-11-18); milestone 8 (final validation with a terminology server, polish) remains. §6 has the decision log, and §7 has the remaining open points.
+Status: **all milestones (1-8) implemented** (2026-11-18). §6 has the decision log, and §7 has the remaining open points.
 
 Goal: read a Kanta export (`*.ndjson` of FHIR `DocumentReference`s with embedded documents) and produce three kinds of document, each as a separate FHIR `Bundle` (type `document`) JSON file:
 
@@ -291,7 +291,10 @@ tests/  tests/fixtures/{real,synthetic}/
    - Content of a stay = the items and narratives of the documents of that service event. Narratives are routed by Kanta heading: 21 → Admission evaluation, 62 → Discharge summary, 55 → Discharge medications (text only, no structured medication exists), 75 → Plan of care, other care-delivery (phase 15) narratives → Hospital course. Headings 13/51/53/64 are shown from the structured entries instead. The Hospital course section always exists (with a generated stay summary), which satisfies cmp-hdr-2.
    - The stay's diagnoses are discharge diagnoses on the Encounter (use DD, main diagnosis rank 1) and are active in the report. Allergies and alerts are patient-level and included in every report.
    - Composition author = the author of the latest record entry of the stay; identifier = that document's id.
-8. Final validation **with a terminology server**, fixes, documentation of accepted warnings; CLI polish, golden tests, README.
+8. ✅ (done 2026-11-18) Final validation **with a terminology server**, fixes, documentation of accepted warnings; CLI polish, golden tests, README. Notes:
+   - All 6 documents (real export: EPS + 2 lab reports; synthetic export: EPS, lab report, discharge report) validate with 0 errors against tx.fhir.org. Every warning falls into one of four accepted categories (unknown Finnish code systems, eHDSI value sets not on tx.fhir.org, the LOINC panel mapping, a validator note on ambiguous profiles). See `docs/VALIDATION.md`; `tools/validation_summary.py` flags any new kind of warning.
+   - The LOINC panel warning is kept as accepted: Athena does not mark panels, so leaving panel codes out would need a separate panel list (possible follow-up).
+   - Golden-file tests (`tests/golden/`, regenerated with `tools/update_golden.py`) cover all document types for the four fixtures. They are built without the local title cache, so they do not depend on `vocab/`.
 
 ## 5. Out of scope (for now)
 - Other payload formats (D9), Finnish national profile conformance (D2), medication data sources beyond what is in the CDA, and loading the output into a FHIR server.

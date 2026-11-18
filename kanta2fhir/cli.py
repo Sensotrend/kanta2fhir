@@ -18,7 +18,7 @@ from kanta2fhir.fhir.hdr import build_discharge_reports
 from kanta2fhir.fhir.lab import build_lab_reports
 from kanta2fhir.fhir.profiles import PACKAGES
 from kanta2fhir.model import Severity
-from kanta2fhir.pipeline import PatientResult, run
+from kanta2fhir.pipeline import PatientResult, PipelineResult, run
 from kanta2fhir.terminology import Terminology
 from kanta2fhir.validate import ValidatorUnavailable, format_results, run_validator
 
@@ -36,6 +36,11 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="kanta2fhir",
         description="Convert a Kanta ndjson export into European FHIR documents.",
+        epilog=(
+            "Output: OUT/eps, OUT/lab, OUT/hdr (one JSON Bundle per document), OUT/report.json "
+            "(coverage, no personal data). Exit codes: 0 ok, 1 nothing readable or validation "
+            "errors, 2 validator not available."
+        ),
     )
     parser.add_argument("input", type=Path, help="Kanta export (.ndjson)")
     parser.add_argument("--out", type=Path, required=True, help="output directory")
@@ -75,19 +80,14 @@ def main(argv: list[str] | None = None) -> int:
     _write_json(report_path, report)
     print(format_summary(report))
 
-    terminology = Terminology()
     written: dict[str, list[Path]] = {}
-    for target in targets:
-        builder = BUILDERS.get(target)
-        if builder is None:
-            print(f"Skipping {target}: not implemented yet")
-            continue
+    documents = build_documents(result, targets, Terminology(), generated_at)
+    for target, docs in documents.items():
         files = written.setdefault(target, [])
-        for patient in result.patients:
-            for stem, bundle in builder(patient, terminology, generated_at):
-                path = args.out / target / f"{stem}.json"
-                _write_json(path, bundle)
-                files.append(path)
+        for stem, bundle in docs:
+            path = args.out / target / f"{stem}.json"
+            _write_json(path, bundle)
+            files.append(path)
         print(f"{target}: {len(files)} document(s) written to {args.out / target}")
     print(f"Report written to {report_path}")
 
@@ -111,6 +111,18 @@ def main(argv: list[str] | None = None) -> int:
     if has_errors and not result.parsed:
         return 1
     return 1 if validation_failed else 0
+
+
+def build_documents(
+    result: PipelineResult, targets: list[str], terminology: Terminology, generated_at: str
+) -> dict[str, list[tuple[str, JSON]]]:
+    """All documents of the requested targets: target → [(file stem, Bundle)]."""
+    out: dict[str, list[tuple[str, JSON]]] = {}
+    for target in targets:
+        docs = out.setdefault(target, [])
+        for patient in result.patients:
+            docs.extend(BUILDERS[target](patient, terminology, generated_at))
+    return out
 
 
 def _write_json(path: Path, data: JSON) -> None:

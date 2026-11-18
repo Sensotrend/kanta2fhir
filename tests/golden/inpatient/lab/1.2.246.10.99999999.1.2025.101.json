@@ -1,0 +1,832 @@
+{
+  "resourceType": "Bundle",
+  "id": "1f976a4b-b52c-538a-a881-0619944fd03c",
+  "meta": {
+    "profile": [
+      "http://hl7.eu/fhir/laboratory/StructureDefinition/Bundle-eu-lab"
+    ]
+  },
+  "language": "fi",
+  "identifier": {
+    "system": "urn:ietf:rfc:3986",
+    "value": "urn:uuid:1f976a4b-b52c-538a-a881-0619944fd03c"
+  },
+  "type": "document",
+  "timestamp": "2026-01-01T12:00:00+02:00",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:c20ed178-9757-506c-89b5-5a4163f35aa8",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "c20ed178-9757-506c-89b5-5a4163f35aa8",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Composition-eu-lab"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\" lang=\"fi\" xml:lang=\"fi\"><p>Laboratoriotulokset 2025-03-17</p><p>3 tutkimustulosta</p></div>"
+        },
+        "language": "fi",
+        "extension": [
+          {
+            "url": "http://hl7.eu/fhir/extensions/StructureDefinition/composition-diagnosticReportReference",
+            "valueReference": {
+              "reference": "urn:uuid:f98d21bf-6c65-5f25-a918-15c0b5c4e41b"
+            }
+          }
+        ],
+        "identifier": {
+          "system": "urn:ietf:rfc:3986",
+          "value": "urn:oid:1.2.246.10.99999999.1.2025.101"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11502-2",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        },
+        "encounter": {
+          "reference": "urn:uuid:79475a7a-6720-5216-a106-447950cbb25f"
+        },
+        "date": "2025-03-17T11:00:00+02:00",
+        "author": [
+          {
+            "reference": "urn:uuid:d820c20a-a7c9-5517-9e1a-a95cb9c47787"
+          }
+        ],
+        "title": "Laboratoriotulokset 2025-03-17",
+        "custodian": {
+          "reference": "urn:uuid:2b2c60f4-a29a-5dd3-b5b4-0ebc8497de81"
+        },
+        "section": [
+          {
+            "title": "Laboratoriotutkimukset",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://loinc.org",
+                  "code": "26436-6",
+                  "display": "Laboratory studies (set)"
+                }
+              ]
+            },
+            "text": {
+              "status": "generated",
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Tutkimus</th><th>Tulos</th><th>Viitearvot</th><th>Tulkinta</th><th>Aika</th></tr></thead><tbody><tr><td>B -Hemoglobiini</td><td>128 g/l</td><td>117 g/l - 155 g/l</td><td>Normaali arvo</td><td>2025-03-16T08:00:00+02:00</td></tr><tr><td>S -Troponiini T</td><td>412 ng/l</td><td>0 ng/l - 14 ng/l</td><td>Yli viitearvon ylärajan</td><td>2025-03-10T15:00:00+02:00</td></tr><tr><td>S -C-reaktiivinen proteiini</td><td>6 mg/l</td><td>0 mg/l - 10 mg/l</td><td>Normaali arvo</td><td>2025-03-10T15:00:00+02:00</td></tr></tbody></table></div>"
+            },
+            "entry": [
+              {
+                "reference": "urn:uuid:7a545b2a-9049-5df4-a577-3f3c4e928696"
+              },
+              {
+                "reference": "urn:uuid:d8d24841-b533-597d-8ffd-0f4f9035a0e0"
+              },
+              {
+                "reference": "urn:uuid:e6c655ba-fed7-5070-a15e-eefaecb5e01d"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "60bb6270-61de-5227-8ddb-76477d0e5ebd",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/patient-eu-core"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Saara Synteettinen</p><p>Henkilötunnus 150550-9121</p><p>1950-05-15</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:oid:1.2.246.21",
+            "value": "150550-9121"
+          }
+        ],
+        "name": [
+          {
+            "use": "official",
+            "family": "Synteettinen",
+            "given": [
+              "Saara"
+            ]
+          }
+        ],
+        "gender": "female",
+        "birthDate": "1950-05-15"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2b2c60f4-a29a-5dd3-b5b4-0ebc8497de81",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "2b2c60f4-a29a-5dd3-b5b4-0ebc8497de81",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/organization-eu-core"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Synteettinen sairaala, sisätautien osasto</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.99.9999999.900.9"
+          }
+        ],
+        "name": "Synteettinen sairaala, sisätautien osasto"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:79475a7a-6720-5216-a106-447950cbb25f",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "79475a7a-6720-5216-a106-447950cbb25f",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Osastohoitojakso</p><p>2025-03-10T14:30:00+02:00 - 2025-03-17T11:00:00+02:00</p><p>Synteettinen sairaala, sisätautien osasto</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.10.99999999.1.2025.100.2"
+          }
+        ],
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "IMP",
+          "display": "inpatient encounter"
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "system": "urn:oid:1.2.246.537.5.40156.2008",
+                "code": "1",
+                "display": "Osastohoitojakso"
+              }
+            ],
+            "text": "Osastohoitojakso"
+          }
+        ],
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        },
+        "period": {
+          "start": "2025-03-10T14:30:00+02:00",
+          "end": "2025-03-17T11:00:00+02:00"
+        },
+        "serviceProvider": {
+          "reference": "urn:uuid:2b2c60f4-a29a-5dd3-b5b4-0ebc8497de81"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:132ac49a-73c2-5dc3-a3d0-8415a55e61ae",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "132ac49a-73c2-5dc3-a3d0-8415a55e61ae",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitioner-eu-core"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Lauri Lääkäri LL</p></div>"
+        },
+        "name": [
+          {
+            "use": "official",
+            "family": "Lääkäri",
+            "given": [
+              "Lauri"
+            ],
+            "suffix": [
+              "LL"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d820c20a-a7c9-5517-9e1a-a95cb9c47787",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "d820c20a-a7c9-5517-9e1a-a95cb9c47787",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/base/StructureDefinition/practitionerRole-eu-core"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Lauri Lääkäri LL</p><p>Synteettinen sairaala, sisätautien osasto</p></div>"
+        },
+        "practitioner": {
+          "reference": "urn:uuid:132ac49a-73c2-5dc3-a3d0-8415a55e61ae"
+        },
+        "organization": {
+          "reference": "urn:uuid:2b2c60f4-a29a-5dd3-b5b4-0ebc8497de81"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0d59f8d9-0c4b-5f4b-8120-b5926434a66c",
+      "resource": {
+        "resourceType": "Specimen",
+        "id": "0d59f8d9-0c4b-5f4b-8120-b5926434a66c",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Specimen-eu-lab"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>seerumi</p></div>"
+        },
+        "type": {
+          "coding": [
+            {
+              "system": "urn:oid:1.2.246.537.6.17.2004",
+              "code": "S",
+              "display": "seerumi"
+            }
+          ],
+          "text": "seerumi"
+        },
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        }
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:7a545b2a-9049-5df4-a577-3f3c4e928696",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "7a545b2a-9049-5df4-a577-3f3c4e928696",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>B -Hemoglobiini: 128 g/l</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.10.99999999.1.2025.410.3"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "urn:oid:1.2.246.537.6.3.2006",
+              "code": "1552",
+              "display": "B -Hemoglobiini",
+              "_display": {
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                    "extension": [
+                      {
+                        "url": "lang",
+                        "valueCode": "en"
+                      },
+                      {
+                        "url": "content",
+                        "valueString": "B -Hemoglobin"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "718-7",
+              "display": "Hemoglobin [Mass/volume] in Blood"
+            }
+          ],
+          "text": "B -Hemoglobiini"
+        },
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        },
+        "encounter": {
+          "reference": "urn:uuid:79475a7a-6720-5216-a106-447950cbb25f"
+        },
+        "effectiveDateTime": "2025-03-16T08:00:00+02:00",
+        "issued": "2025-03-16T08:00:00+02:00",
+        "performer": [
+          {
+            "reference": "urn:uuid:d820c20a-a7c9-5517-9e1a-a95cb9c47787"
+          }
+        ],
+        "valueQuantity": {
+          "value": 128,
+          "unit": "g/l",
+          "system": "http://unitsofmeasure.org",
+          "code": "g/L"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "N",
+                "display": "Normal"
+              },
+              {
+                "system": "urn:oid:1.2.246.537.5.78.1997",
+                "code": "N",
+                "display": "Normaali arvo"
+              }
+            ],
+            "text": "Normaali arvo"
+          }
+        ],
+        "specimen": {
+          "reference": "urn:uuid:0d59f8d9-0c4b-5f4b-8120-b5926434a66c"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 117,
+              "unit": "g/l",
+              "system": "http://unitsofmeasure.org",
+              "code": "g/L"
+            },
+            "high": {
+              "value": 155,
+              "unit": "g/l",
+              "system": "http://unitsofmeasure.org",
+              "code": "g/L"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d8d24841-b533-597d-8ffd-0f4f9035a0e0",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "d8d24841-b533-597d-8ffd-0f4f9035a0e0",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>S -Troponiini T: 412 ng/l</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.10.99999999.1.2025.410.1"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "urn:oid:1.2.246.537.6.3.2006",
+              "code": "4278",
+              "display": "S -Troponiini T",
+              "_display": {
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                    "extension": [
+                      {
+                        "url": "lang",
+                        "valueCode": "en"
+                      },
+                      {
+                        "url": "content",
+                        "valueString": "S -Troponin T"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "6598-7",
+              "display": "Troponin T.cardiac [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "S -Troponiini T"
+        },
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        },
+        "encounter": {
+          "reference": "urn:uuid:79475a7a-6720-5216-a106-447950cbb25f"
+        },
+        "effectiveDateTime": "2025-03-10T15:00:00+02:00",
+        "issued": "2025-03-10T15:00:00+02:00",
+        "performer": [
+          {
+            "reference": "urn:uuid:d820c20a-a7c9-5517-9e1a-a95cb9c47787"
+          }
+        ],
+        "valueQuantity": {
+          "value": 412,
+          "unit": "ng/l",
+          "system": "http://unitsofmeasure.org",
+          "code": "ng/L"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "H",
+                "display": "High"
+              },
+              {
+                "system": "urn:oid:1.2.246.537.5.78.1997",
+                "code": "H",
+                "display": "Yli viitearvon ylärajan"
+              }
+            ],
+            "text": "Yli viitearvon ylärajan"
+          }
+        ],
+        "specimen": {
+          "reference": "urn:uuid:0d59f8d9-0c4b-5f4b-8120-b5926434a66c"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "unit": "ng/l",
+              "system": "http://unitsofmeasure.org",
+              "code": "ng/L"
+            },
+            "high": {
+              "value": 14,
+              "unit": "ng/l",
+              "system": "http://unitsofmeasure.org",
+              "code": "ng/L"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e6c655ba-fed7-5070-a15e-eefaecb5e01d",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "e6c655ba-fed7-5070-a15e-eefaecb5e01d",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/Observation-resultslab-eu-lab"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>S -C-reaktiivinen proteiini: 6 mg/l</p></div>"
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.10.99999999.1.2025.410.2"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "laboratory",
+                "display": "Laboratory"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "urn:oid:1.2.246.537.6.3.2006",
+              "code": "1216",
+              "display": "S -C-reaktiivinen proteiini",
+              "_display": {
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/translation",
+                    "extension": [
+                      {
+                        "url": "lang",
+                        "valueCode": "en"
+                      },
+                      {
+                        "url": "content",
+                        "valueString": "S -C-reactive protein"
+                      }
+                    ]
+                  }
+                ]
+              }
+            },
+            {
+              "system": "http://loinc.org",
+              "code": "1988-5",
+              "display": "C reactive protein [Mass/volume] in Serum or Plasma"
+            }
+          ],
+          "text": "S -C-reaktiivinen proteiini"
+        },
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        },
+        "encounter": {
+          "reference": "urn:uuid:79475a7a-6720-5216-a106-447950cbb25f"
+        },
+        "effectiveDateTime": "2025-03-10T15:00:00+02:00",
+        "issued": "2025-03-10T15:00:00+02:00",
+        "performer": [
+          {
+            "reference": "urn:uuid:d820c20a-a7c9-5517-9e1a-a95cb9c47787"
+          }
+        ],
+        "valueQuantity": {
+          "value": 6,
+          "unit": "mg/l",
+          "system": "http://unitsofmeasure.org",
+          "code": "mg/L"
+        },
+        "interpretation": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "code": "N",
+                "display": "Normal"
+              },
+              {
+                "system": "urn:oid:1.2.246.537.5.78.1997",
+                "code": "N",
+                "display": "Normaali arvo"
+              }
+            ],
+            "text": "Normaali arvo"
+          }
+        ],
+        "specimen": {
+          "reference": "urn:uuid:0d59f8d9-0c4b-5f4b-8120-b5926434a66c"
+        },
+        "referenceRange": [
+          {
+            "low": {
+              "value": 0,
+              "unit": "mg/l",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/L"
+            },
+            "high": {
+              "value": 10,
+              "unit": "mg/l",
+              "system": "http://unitsofmeasure.org",
+              "code": "mg/L"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f98d21bf-6c65-5f25-a918-15c0b5c4e41b",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "f98d21bf-6c65-5f25-a918-15c0b5c4e41b",
+        "meta": {
+          "profile": [
+            "http://hl7.eu/fhir/laboratory/StructureDefinition/DiagnosticReport-eu-lab"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><table><thead><tr><th>Tutkimus</th><th>Tulos</th><th>Viitearvot</th><th>Tulkinta</th><th>Aika</th></tr></thead><tbody><tr><td>B -Hemoglobiini</td><td>128 g/l</td><td>117 g/l - 155 g/l</td><td>Normaali arvo</td><td>2025-03-16T08:00:00+02:00</td></tr><tr><td>S -Troponiini T</td><td>412 ng/l</td><td>0 ng/l - 14 ng/l</td><td>Yli viitearvon ylärajan</td><td>2025-03-10T15:00:00+02:00</td></tr><tr><td>S -C-reaktiivinen proteiini</td><td>6 mg/l</td><td>0 mg/l - 10 mg/l</td><td>Normaali arvo</td><td>2025-03-10T15:00:00+02:00</td></tr></tbody></table></div>"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-DiagnosticReport.composition",
+            "valueReference": {
+              "reference": "urn:uuid:c20ed178-9757-506c-89b5-5a4163f35aa8"
+            }
+          }
+        ],
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:oid:1.2.246.10.99999999.1.2025.101"
+          }
+        ],
+        "status": "final",
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://loinc.org",
+                "code": "26436-6",
+                "display": "Laboratory studies (set)"
+              }
+            ]
+          }
+        ],
+        "code": {
+          "coding": [
+            {
+              "system": "http://loinc.org",
+              "code": "11502-2",
+              "display": "Laboratory report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "urn:uuid:60bb6270-61de-5227-8ddb-76477d0e5ebd"
+        },
+        "encounter": {
+          "reference": "urn:uuid:79475a7a-6720-5216-a106-447950cbb25f"
+        },
+        "effectiveDateTime": "2025-03-10T15:00:00+02:00",
+        "issued": "2025-03-16T08:00:00+02:00",
+        "performer": [
+          {
+            "reference": "urn:uuid:d820c20a-a7c9-5517-9e1a-a95cb9c47787"
+          }
+        ],
+        "specimen": [
+          {
+            "reference": "urn:uuid:0d59f8d9-0c4b-5f4b-8120-b5926434a66c"
+          }
+        ],
+        "result": [
+          {
+            "reference": "urn:uuid:7a545b2a-9049-5df4-a577-3f3c4e928696"
+          },
+          {
+            "reference": "urn:uuid:d8d24841-b533-597d-8ffd-0f4f9035a0e0"
+          },
+          {
+            "reference": "urn:uuid:e6c655ba-fed7-5070-a15e-eefaecb5e01d"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8ddabb88-11c9-51b3-a3c4-5fa596f3e33c",
+      "resource": {
+        "resourceType": "Device",
+        "id": "8ddabb88-11c9-51b3-a3c4-5fa596f3e33c",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>kanta2fhir 0.1.0</p></div>"
+        },
+        "deviceName": [
+          {
+            "name": "kanta2fhir",
+            "type": "manufacturer-name"
+          }
+        ],
+        "version": [
+          {
+            "value": "0.1.0"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:10655c92-195a-5dd0-ad0b-eac49d6a47cd",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "10655c92-195a-5dd0-ad0b-eac49d6a47cd",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Converted by kanta2fhir 0.1.0 from 1 Kanta document(s)</p></div>"
+        },
+        "target": [
+          {
+            "reference": "urn:uuid:c20ed178-9757-506c-89b5-5a4163f35aa8"
+          },
+          {
+            "reference": "urn:uuid:f98d21bf-6c65-5f25-a918-15c0b5c4e41b"
+          }
+        ],
+        "recorded": "2026-01-01T12:00:00+02:00",
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                  "code": "assembler"
+                }
+              ]
+            },
+            "who": {
+              "reference": "urn:uuid:8ddabb88-11c9-51b3-a3c4-5fa596f3e33c"
+            }
+          }
+        ],
+        "entity": [
+          {
+            "role": "source",
+            "what": {
+              "type": "DocumentReference",
+              "identifier": {
+                "system": "urn:ietf:rfc:3986",
+                "value": "urn:oid:1.2.246.10.99999999.1.2025.101"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
