@@ -1,6 +1,6 @@
 # Kanta CDA → EU FHIR documents: implementation plan
 
-Status: **draft v2: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
+Status: **draft v3: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
 
 Goal: read a Kanta export (`*.ndjson` of FHIR `DocumentReference`s with embedded documents) and produce three kinds of document, each as a separate FHIR `Bundle` (type `document`) JSON file:
 
@@ -133,7 +133,12 @@ Mapping tables are CSV files in the repository, each recording its source and ve
 ### 2.5 Finnish lab codes → LOINC via FinOMOP (D4)
 - Source: FinOMOP [`FinOMOP_mappings`](https://github.com/FinOMOP/FinOMOP_mappings), file `VOCABULARIES/LABfi/LABfi.usagi.csv`, with 4,274 rows keyed by the **Kuntaliitto numeric code**. It has columns for the English and Finnish names, `mappingStatus` (APPROVED / UNCHECKED …), `equivalence` and the target OMOP `conceptId`.
 - All lab codes in our data are mapped with status APPROVED, for example 4591 P-ASAT → OMOP 3013721 *Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma*, 4600 P-Krea → 3020564, 6466 COVID-19 NAA → 706163, 1270 EKG → 3044889 *12 lead EKG panel*.
-- **OMOP concept ids are not LOINC codes.** To get the LOINC code, join with the OMOP `CONCEPT.csv` (vocabulary `LOINC`), which comes from an OHDSI Athena vocabulary download. A one-time script `tools/build_labfi_loinc.py` joins the two and writes `terminology/labfi_loinc.csv` (`kuntaliitto_code, name_fi, name_en, loinc_code, loinc_display, mapping_status, equivalence, source_version`). The derived CSV is committed, but Athena downloads are not.
+- **OMOP concept ids are not LOINC codes.** To get the LOINC code, join with the OMOP `CONCEPT.csv` (vocabulary `LOINC`), which comes from an OHDSI Athena vocabulary download (steps in §8). A script `tools/build_labfi_loinc.py` joins the two and writes `terminology/labfi_loinc.csv` (`kuntaliitto_code, name_fi, name_en, loinc_code, loinc_display, mapping_status, equivalence, finomop_commit, athena_version`).
+- **Licensing (pending, §7.1):** `FinOMOP_mappings` declares no licence. Until FinOMOP gives explicit terms:
+  - the script fetches `LABfi.usagi.csv` at a **pinned commit** (currently `938afd21`, 2026-09-18) from GitHub;
+  - it writes the derived table to the git-ignored `vocab/` directory;
+  - nothing from FinOMOP is committed or included in a distributed package.
+  If the terms allow it later, the derived CSV moves into `terminology/` and is committed.
 - Use: add the LOINC coding to `Observation.code` only when `mappingStatus = APPROVED`. The Finnish code remains the first coding. The FinOMOP `equivalence` is mostly `UNREVIEWED`, so this is a best-effort mapping, and the coverage report says so.
 - The LABfi English names give the English display for the Finnish code itself, whether or not a LOINC mapping exists.
 - Caveat: OMOP mappings are analyte-level, so method, specimen or unit nuances of the Finnish code may be lost. The original code stays in the resource.
@@ -157,7 +162,7 @@ One `Bundle(type=document)` per patient with **all** history included (D6). Sect
 | 8 | sectionAdvanceDirectives | 42348-3 | 0..1 | — |
 | 9 | sectionAlert | 104605-1 | 0..1 | Other (non-allergy) risk items → Flag |
 | 10 | sectionFunctionalStatus | 47420-5 | 0..1 | — |
-| 10b | **Past problems** (IPS `sectionPastProblems`) | 11348-0 | 0..1 | **All other diagnoses**: temporary (KER) and non-active ones. See §7.2 |
+| 10b | **Past problems** (IPS `sectionPastProblems`, D12) | 11348-0 | 0..1 | **All other diagnoses**: temporary (KER) and non-active ones. This slice is not in EPS (it is open slicing), so it is placed at its IPS position |
 | 11 | sectionPregnancyHx | 10162-6 | 0..1 | — |
 | 12 | sectionPatientStory | 81338-6 | 0..1 | — |
 | 13 | sectionPlanOfCare | 18776-5 | 0..1 | Health and care plan → CarePlan + Goals |
@@ -194,7 +199,7 @@ One `Bundle(type=document)` per **inpatient** episode.
 - IG packages are pinned in `igs/packages.lock` and downloaded by `tools/fetch_igs.py`: EPS 1.0.0-ballot, Lab 2.1.0, HDR 1.0.0, plus their dependencies.
 - HL7 FHIR Validator (`validator_cli.jar`, needs Java 17 or newer), run per target with that target's IG.
 - **Phase 1 (development):** `-tx n/a`, no terminology checks. This is fast and offline, and it is the default for `make validate` and in tests.
-- **Phase 2 (final acceptance):** run with a terminology server: `tx.fhir.org` by default, or a local server (`-tx <url>`) if preferred. Only codes are sent to the server, not patient data. Even so, with real (non-test) exports the run must use a local terminology server. Expect warnings for Finnish `urn:oid` code systems that the server does not know, and record which are accepted.
+- **Phase 2 (final acceptance):** run with a terminology server: `tx.fhir.org` for now (D13), or a local server (`-tx <url>`) later. Only codes are sent to the server, not patient data. Even so, with real (non-test) exports the run must use a local terminology server. Expect warnings for Finnish `urn:oid` code systems that the server does not know, and record which are accepted.
 - Results are stored as validator `OperationOutcome`s plus a summary table of errors and warnings per file, in `out/validation/`.
 
 ### 2.8 Tests
@@ -278,11 +283,33 @@ tests/  tests/fixtures/{real,synthetic}/
 | D9 | Input formats | Kanta CDA only; no format-plugin framework |
 | D10 | Output | Separate JSON Bundle file per document |
 | D11 | Validation | Develop without terminology checks; final results checked with a terminology server |
+| D12 | Past problems | Emit the IPS past problems section (11348-0) at its IPS position, even though EPS does not define it |
+| D13 | Terminology server | `tx.fhir.org` for the current (test data) phase |
 
 ## 7. Open points
 
-1. ~~HDR version~~: resolved, using 1.0.0 (D2).
-2. **Past problems section in EPS.** EPS 1.0.0-ballot **does not define** the IPS `sectionPastProblems` (11348-0) slice. Its Composition is based on EU core, not on the IPS Composition. Section slicing is *open*, so an extra section coded 11348-0 is allowed, placed at its IPS position between Functional status and Pregnancy history. The validator may then report it as an unrecognised (non-slice) section, as information or a warning. Alternatives: put past problems into `sectionPatientHx` (11329-0), or keep them in `sectionProblems` with `clinicalStatus` inactive/resolved. **Proposal: emit the 11348-0 section as planned and review the validator output.**
-3. **FinOMOP mapping licence.** The `FinOMOP_mappings` repository declares no licence. Before committing the derived `labfi_loinc.csv`, check the terms with FinOMOP, or keep the table out of the repository and generate it locally.
-4. **Athena access.** Joining OMOP concept ids to LOINC codes needs an OHDSI Athena vocabulary download (free account; LOINC terms accepted on download). Can you do the download, or is there another source of the OMOP `CONCEPT` table you already use?
-5. **Terminology server for final validation.** Is `tx.fhir.org` acceptable for the test data, or should we set up a local one (e.g. Ontoserver/Snowstorm) from the start?
+Resolved: HDR version (D2), past problems section (D12), terminology server (D13).
+
+1. **FinOMOP mapping licence.** A public GitHub repository with no licence defaults to "all rights reserved": the files may be viewed, but reuse and redistribution are not granted. (This is not legal advice.) What is needed is a **written statement from the FinOMOP maintainers** that covers (a) using the LABfi (and possibly ICD10fi) mappings in this converter, and (b) redistributing a derived table (Kuntaliitto code → LOINC + English names) in this repository. The easiest route is to ask them to add a LICENSE file (e.g. CC BY 4.0), for example through a GitHub issue on `FinOMOP/FinOMOP_mappings` or by contacting the FinOMOP consortium. Note that the Finnish names come from THL/Kuntaliitto code sets, which have their own terms, and the English names may be FinOMOP's own work. Until then, the local-only approach in §2.5 applies.
+2. **ICD-10 English names.** FinOMOP also has an `ICD10fi` vocabulary with English names for the Finnish ICD-10 codes, which could cover D8 for diagnoses. It has the same licence question; the alternative is WHO ICD-10 English titles, which have their own licence terms.
+
+### Notes on resolved points
+- Past problems (D12): EPS 1.0.0-ballot does not define the IPS `sectionPastProblems` (11348-0) slice, because its Composition is based on EU core rather than on the IPS Composition. Section slicing is *open*, so the extra section is allowed. The validator may report it as an unrecognised (non-slice) section, as information or a warning; this is reviewed at milestone 6. The alternatives considered were putting past problems into `sectionPatientHx` (11329-0), or keeping them in `sectionProblems` as inactive.
+- The git history keeps the earlier wording of each question.
+
+---
+
+## 8. Athena vocabulary download (needed for milestone 3)
+
+Only the **LOINC** vocabulary is needed, to resolve the FinOMOP OMOP concept ids to LOINC codes.
+
+1. Sign in at <https://athena.ohdsi.org> (top right, "Log in").
+2. Open the **Download** tab.
+3. Untick everything, then tick only **LOINC** (vocabulary id `LOINC`). It needs no extra licence acceptance in Athena; only CPT4 does.
+   - Optional, for later use: **SNOMED** (target disease, route and site mappings). Using SNOMED CT is subject to SNOMED licensing, which depends on your country's membership status, so check this before relying on it.
+4. Click **Download vocabularies**, give the bundle a name (e.g. `kanta2fhir-loinc`), and confirm.
+5. Athena emails a download link when the bundle is ready (minutes to hours). It also appears under **Show history** on the Download page.
+6. Unzip it into **`vocab/athena/`** in this repository. The directory is git-ignored, so nothing from the bundle is committed. Alternatively, unzip it anywhere and tell me the path.
+7. Only `CONCEPT.csv` is used. Despite the extension it is **tab-separated**. The build script records the vocabulary version from `VOCABULARY.csv` in the derived table.
+
+LOINC concept ids are stable across Athena releases, so the exact release does not matter much. The script reports any FinOMOP target concept that is missing or deprecated (`invalid_reason` set) in the downloaded release.

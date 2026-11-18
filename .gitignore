@@ -6,3 +6,6 @@
 
 # Generated output
 out/
+
+# Locally downloaded vocabularies (Athena, FinOMOP) - not redistributable
+vocab/
