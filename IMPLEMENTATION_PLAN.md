@@ -1,6 +1,6 @@
 # Kanta CDA → EU FHIR documents: implementation plan
 
-Status: **draft v3: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
+Status: **draft v4: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
 
 Goal: read a Kanta export (`*.ndjson` of FHIR `DocumentReference`s with embedded documents) and produce three kinds of document, each as a separate FHIR `Bundle` (type `document`) JSON file:
 
@@ -134,11 +134,11 @@ Mapping tables are CSV files in the repository, each recording its source and ve
 - Source: FinOMOP [`FinOMOP_mappings`](https://github.com/FinOMOP/FinOMOP_mappings), file `VOCABULARIES/LABfi/LABfi.usagi.csv`, with 4,274 rows keyed by the **Kuntaliitto numeric code**. It has columns for the English and Finnish names, `mappingStatus` (APPROVED / UNCHECKED …), `equivalence` and the target OMOP `conceptId`.
 - All lab codes in our data are mapped with status APPROVED, for example 4591 P-ASAT → OMOP 3013721 *Aspartate aminotransferase [Enzymatic activity/volume] in Serum or Plasma*, 4600 P-Krea → 3020564, 6466 COVID-19 NAA → 706163, 1270 EKG → 3044889 *12 lead EKG panel*.
 - **OMOP concept ids are not LOINC codes.** To get the LOINC code, join with the OMOP `CONCEPT.csv` (vocabulary `LOINC`), which comes from an OHDSI Athena vocabulary download (steps in §8). A script `tools/build_labfi_loinc.py` joins the two and writes `terminology/labfi_loinc.csv` (`kuntaliitto_code, name_fi, name_en, loinc_code, loinc_display, mapping_status, equivalence, finomop_commit, athena_version`).
-- **Licensing (pending, §7.1):** `FinOMOP_mappings` declares no licence. Until FinOMOP gives explicit terms:
-  - the script fetches `LABfi.usagi.csv` at a **pinned commit** (currently `938afd21`, 2026-09-18) from GitHub;
-  - it writes the derived table to the git-ignored `vocab/` directory;
-  - nothing from FinOMOP is committed or included in a distributed package.
-  If the terms allow it later, the derived CSV moves into `terminology/` and is committed.
+- **Licensing (D14):** FinOMOP is an OHDSI national node, and OHDSI states that its artifacts are open source and free, except for proprietary vocabularies. On that basis:
+  - the build script fetches `LABfi.usagi.csv` at a **pinned commit** (currently `938afd21`, 2026-09-18) from GitHub;
+  - the derived `terminology/labfi_loinc.csv` **is committed**, with an attribution header (FinOMOP source and commit; LOINC notice);
+  - a `NOTICE`/README section credits FinOMOP and includes the LOINC copyright notice that the LOINC licence requires when LOINC content is redistributed;
+  - no SNOMED CT content from Athena is redistributed, because that is a proprietary click-through vocabulary.
 - Use: add the LOINC coding to `Observation.code` only when `mappingStatus = APPROVED`. The Finnish code remains the first coding. The FinOMOP `equivalence` is mostly `UNREVIEWED`, so this is a best-effort mapping, and the coverage report says so.
 - The LABfi English names give the English display for the Finnish code itself, whether or not a LOINC mapping exists.
 - Caveat: OMOP mappings are analyte-level, so method, specimen or unit nuances of the Finnish code may be lost. The original code stays in the resource.
@@ -285,16 +285,17 @@ tests/  tests/fixtures/{real,synthetic}/
 | D11 | Validation | Develop without terminology checks; final results checked with a terminology server |
 | D12 | Past problems | Emit the IPS past problems section (11348-0) at its IPS position, even though EPS does not define it |
 | D13 | Terminology server | `tx.fhir.org` for the current (test data) phase |
+| D14 | FinOMOP licence | Accepted as open, based on OHDSI's statement that its artifacts are open source and free ([forum](https://forums.ohdsi.org/t/omop-licensing-information/3147)) and FinOMOP's status as an OHDSI national node sharing OHDSI's principles. Derived tables are committed with attribution. Optionally, ask FinOMOP to add an explicit LICENSE file to remove any doubt |
 
 ## 7. Open points
 
-Resolved: HDR version (D2), past problems section (D12), terminology server (D13).
+Resolved: HDR version (D2), past problems section (D12), terminology server (D13), FinOMOP licence (D14).
 
-1. **FinOMOP mapping licence.** A public GitHub repository with no licence defaults to "all rights reserved": the files may be viewed, but reuse and redistribution are not granted. (This is not legal advice.) What is needed is a **written statement from the FinOMOP maintainers** that covers (a) using the LABfi (and possibly ICD10fi) mappings in this converter, and (b) redistributing a derived table (Kuntaliitto code → LOINC + English names) in this repository. The easiest route is to ask them to add a LICENSE file (e.g. CC BY 4.0), for example through a GitHub issue on `FinOMOP/FinOMOP_mappings` or by contacting the FinOMOP consortium. Note that the Finnish names come from THL/Kuntaliitto code sets, which have their own terms, and the English names may be FinOMOP's own work. Until then, the local-only approach in §2.5 applies.
-2. **ICD-10 English names.** FinOMOP also has an `ICD10fi` vocabulary with English names for the Finnish ICD-10 codes, which could cover D8 for diagnoses. It has the same licence question; the alternative is WHO ICD-10 English titles, which have their own licence terms.
+1. **ICD-10 English names.** FinOMOP also has an `ICD10fi` vocabulary with English names for the Finnish ICD-10 codes, which could cover D8 for diagnoses under the same terms as D14. Proposal: use it, with the same pinned-commit and attribution approach. The alternative is WHO ICD-10 English titles, which have their own licence terms.
 
 ### Notes on resolved points
 - Past problems (D12): EPS 1.0.0-ballot does not define the IPS `sectionPastProblems` (11348-0) slice, because its Composition is based on EU core rather than on the IPS Composition. Section slicing is *open*, so the extra section is allowed. The validator may report it as an unrecognised (non-slice) section, as information or a warning; this is reviewed at milestone 6. The alternatives considered were putting past problems into `sectionPatientHx` (11329-0), or keeping them in `sectionProblems` as inactive.
+- FinOMOP licence (D14): OHDSI's statement does not name a specific licence (e.g. Apache 2.0), so attribution is kept as a safe default. The FinOMOP wiki page cited for the node status needs a login, so it was not checked here.
 - The git history keeps the earlier wording of each question.
 
 ---

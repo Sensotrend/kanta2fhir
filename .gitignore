@@ -7,5 +7,5 @@
 # Generated output
 out/
 
-# Locally downloaded vocabularies (Athena, FinOMOP) - not redistributable
+# Locally downloaded vocabularies (Athena bundles, raw downloads)
 vocab/
