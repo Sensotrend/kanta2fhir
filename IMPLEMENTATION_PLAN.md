@@ -14,7 +14,7 @@ Target specifications (FHIR R4 4.0.1):
 |---|---|---|---|
 | Patient Summary | `hl7.fhir.eu.eps` | `1.0.0-ballot` | Depends on `hl7.fhir.uv.ips` 2.0.0 and `hl7.fhir.eu.base` 2.0.0 |
 | Laboratory Report | `hl7.fhir.eu.laboratory` | `2.1.0` | Depends on `hl7.fhir.eu.base` 2.0.1 and IPS 2.0.1 |
-| Hospital Discharge Report | `hl7.fhir.eu.hdr` | `1.0.0-alpha` (decided; see §7.1 about 1.0.0) | The alpha is only at `hl7.eu/fhir/hdr/xtehr/package.tgz` and is not in the package registry |
+| Hospital Discharge Report | `hl7.fhir.eu.hdr` | `1.0.0` | STU 1 release (package dated 2026-10-16). Depends on `hl7.fhir.eu.base` 2.0.1 and IPS 2.0.1 |
 
 No conformance to the Finnish national profiles (FinCore etc.) is claimed.
 
@@ -184,14 +184,14 @@ Why per document rather than per order (answer to Q5):
 - **One document can contain several orders.** The opposite also happens, for example tests ordered by different requesters in the same visit.
 - The source document is the unit that was signed and archived. Mapping it 1:1 to a report keeps provenance simple: one source document gives one FHIR document.
 
-#### C. European Hospital Discharge Report (`hl7.fhir.eu.hdr` 1.0.0-alpha)
+#### C. European Hospital Discharge Report (`hl7.fhir.eu.hdr` 1.0.0)
 One `Bundle(type=document)` per **inpatient** episode.
 - Trigger: a service event whose encounter type is inpatient (`hl7fi:encompassingEncounterCode` = osastohoitojakso, the exact code to be confirmed from the Kanta code list), together with the record entries linked through `context.related` / encounter id.
 - Content: Encounter (admission/discharge, period, service provider), admission reason and discharge diagnoses (PAA/SIVU), procedures, significant results, medication at discharge, allergies, plan of care / follow-up, and the narrative "Hospital course" from the Kertomusteksti sections.
 - **Synthetic test data (D3):** no real inpatient data is available. `tests/fixtures/synthetic/` will contain hand-made Kanta-style CDA documents (an inpatient service event, a ward record entry, discharge diagnoses, a discharge summary narrative and medication at discharge) packed into an ndjson that matches the real envelope. They are based on the real documents' structure, with the CDA templates and codes taken from the real file. The real file produces zero HDR documents, which is the expected and tested result.
 
 ### 2.7 Validation (D11)
-- IG packages are pinned in `igs/packages.lock` and downloaded by `tools/fetch_igs.py`: EPS 1.0.0-ballot, Lab 2.1.0, HDR 1.0.0-alpha (from the hl7.eu xtehr URL), plus their dependencies.
+- IG packages are pinned in `igs/packages.lock` and downloaded by `tools/fetch_igs.py`: EPS 1.0.0-ballot, Lab 2.1.0, HDR 1.0.0, plus their dependencies.
 - HL7 FHIR Validator (`validator_cli.jar`, needs Java 17 or newer), run per target with that target's IG.
 - **Phase 1 (development):** `-tx n/a`, no terminology checks. This is fast and offline, and it is the default for `make validate` and in tests.
 - **Phase 2 (final acceptance):** run with a terminology server: `tx.fhir.org` by default, or a local server (`-tx <url>`) if preferred. Only codes are sent to the server, not patient data. Even so, with real (non-test) exports the run must use a local terminology server. Expect warnings for Finnish `urn:oid` code systems that the server does not know, and record which are accepted.
@@ -268,7 +268,7 @@ tests/  tests/fixtures/{real,synthetic}/
 | # | Topic | Decision (2026-11-18) |
 |---|---|---|
 | D1 | Language | Python |
-| D2 | IG versions | EPS 1.0.0-ballot, Lab 2.1.0, HDR 1.0.0-alpha; no Finnish national profile conformance |
+| D2 | IG versions | EPS 1.0.0-ballot, Lab 2.1.0, HDR 1.0.0 (changed from 1.0.0-alpha after the STU 1 release was found); no Finnish national profile conformance |
 | D3 | HDR test data | Synthetic Kanta-style CDA fixtures |
 | D4 | Finnish lab codes | Use the FinOMOP LABfi (OMOP) mapping to add LOINC codings (§2.5) |
 | D5 | Lab report grouping | One report per source document (reasoning in §2.6 B) |
@@ -281,7 +281,7 @@ tests/  tests/fixtures/{real,synthetic}/
 
 ## 7. Open points
 
-1. **HDR version.** `hl7.fhir.eu.hdr` **1.0.0** (STU 1, package dated 2026-10-16) is now in the FHIR package registry and is newer than 1.0.0-alpha (2026-02-25). The alpha depends on `hl7.fhir.eu.base` 2.0.0-gamma, while EPS and Lab use eu.base 2.0.0 / 2.0.1, which may cause dependency clashes in validation. **Proposal: target HDR 1.0.0 instead of 1.0.0-alpha.** Needs your OK.
+1. ~~HDR version~~: resolved, using 1.0.0 (D2).
 2. **Past problems section in EPS.** EPS 1.0.0-ballot **does not define** the IPS `sectionPastProblems` (11348-0) slice. Its Composition is based on EU core, not on the IPS Composition. Section slicing is *open*, so an extra section coded 11348-0 is allowed, placed at its IPS position between Functional status and Pregnancy history. The validator may then report it as an unrecognised (non-slice) section, as information or a warning. Alternatives: put past problems into `sectionPatientHx` (11329-0), or keep them in `sectionProblems` with `clinicalStatus` inactive/resolved. **Proposal: emit the 11348-0 section as planned and review the validator output.**
 3. **FinOMOP mapping licence.** The `FinOMOP_mappings` repository declares no licence. Before committing the derived `labfi_loinc.csv`, check the terms with FinOMOP, or keep the table out of the repository and generate it locally.
 4. **Athena access.** Joining OMOP concept ids to LOINC codes needs an OHDSI Athena vocabulary download (free account; LOINC terms accepted on download). Can you do the download, or is there another source of the OMOP `CONCEPT` table you already use?
