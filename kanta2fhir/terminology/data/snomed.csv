@@ -1,0 +1,5 @@
+source_system,source_code,source_display,snomed_code,snomed_display,note
+1.2.246.537.6.111.2007,ID,Ihonsisäisesti,372464004,Intradermal route,vaccination route
+1.2.246.537.6.110.2007,VO,Vasen olkavarsi,368208006,Left upper arm structure,injection site
+1.2.246.537.6.609.201501,2,Kurkkumätä,397430003,Diphtheria caused by Corynebacterium diphtheriae,vaccine target disease
+1.2.246.537.6.609.201501,7,Jäykkäkouristus,76902006,Tetanus,vaccine target disease

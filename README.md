@@ -8,7 +8,7 @@ Converts Kanta health record exports (`*.ndjson` files of FHIR `DocumentReferenc
 
 The design, decisions and milestones are in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
-**Status:** milestones 1-2 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication and a coverage report. No FHIR documents are produced yet.
+**Status:** milestones 1-3 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication, a coverage report, and the terminology layer (LOINC for Finnish lab codes, WHO ICD-10/ATC/SNOMED CT equivalents, English names, UCUM units). No FHIR documents are produced yet.
 
 ## Setup
 
@@ -25,6 +25,28 @@ uv run kanta2fhir path/to/export.ndjson --out out/
 ```
 
 This writes `out/report.json`, a coverage report of what the export contains and what has been mapped, and prints a short summary. The report contains no names or personal identity codes; the patient is identified by a pseudonym (a hash of the identity code).
+
+## Terminology data
+
+The committed tables in `kanta2fhir/terminology/data/` are built with:
+
+```bash
+uv run python tools/build_terminology.py   # needs an Athena LOINC bundle in vocab/athena/
+```
+
+English titles of WHO ICD-10, ATC and LOINC codes are not redistributed. Fetch them for your exports into the git-ignored `vocab/tx_titles.csv` (only codes are sent to the terminology server):
+
+```bash
+uv run python tools/fetch_titles.py path/to/export.ndjson
+```
+
+To check the hand-made mapping tables, units and LOINC codes against tx.fhir.org:
+
+```bash
+uv run python tools/verify_terminology.py path/to/export.ndjson
+```
+
+See [NOTICE](NOTICE) for attributions (FinOMOP, LOINC).
 
 ## Development
 

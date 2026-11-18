@@ -1,0 +1,8 @@
+source_code,target_code,target_display,note
+N,N,Normal,
+H,H,High,
+L,L,Low,
+A,A,Abnormal,
+HH,HH,Critical high,
+LL,LL,Critical low,
+AA,AA,Critical abnormal,

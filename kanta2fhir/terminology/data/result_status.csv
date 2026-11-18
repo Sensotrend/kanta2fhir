@@ -1,0 +1,5 @@
+source_code,fhir_status,note
+F,final,seen in data (Lopullinen tulos)
+P,preliminary,assumed to follow HL7 v2 result status; not seen in data
+C,corrected,assumed to follow HL7 v2 result status; not seen in data
+X,cancelled,assumed to follow HL7 v2 result status; not seen in data

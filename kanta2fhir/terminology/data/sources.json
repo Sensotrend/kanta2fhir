@@ -1,0 +1,22 @@
+{
+  "built": "2026-11-18",
+  "finomop": {
+    "repository": "FinOMOP/FinOMOP_mappings",
+    "commit": "46594187ee0d84a8e34277dcbbc2697207af4abe"
+  },
+  "athena": {
+    "omop": "v5.0 29-AUG-26",
+    "loinc": "LOINC 2.82"
+  },
+  "labfi": {
+    "rows": 4274,
+    "codes": 4222,
+    "approved": 1096,
+    "loinc": 1079,
+    "loinc_invalid": 0
+  },
+  "icd10fi": {
+    "rows": 4942,
+    "codes": 4083
+  }
+}

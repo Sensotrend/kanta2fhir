@@ -1,0 +1,6 @@
+oid,uri,name,note
+1.2.246.537.6.96.2008,http://loinc.org,LOINC,FinLOINC physiological measurements use LOINC codes as such
+1.2.246.537.6.32.2007,http://www.whocc.no/atc,WHO ATC,Fimea ATC follows WHO ATC
+2.16.840.1.113883.6.1,http://loinc.org,LOINC,HL7 OID for LOINC
+2.16.840.1.113883.6.96,http://snomed.info/sct,SNOMED CT,HL7 OID for SNOMED CT
+2.16.840.1.113883.6.8,http://unitsofmeasure.org,UCUM,HL7 OID for UCUM

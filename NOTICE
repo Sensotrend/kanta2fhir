@@ -1,0 +1,29 @@
+kanta2fhir
+==========
+
+This repository includes terminology tables derived from third-party sources.
+
+FinOMOP mappings
+----------------
+kanta2fhir/terminology/data/labfi.csv and kanta2fhir/terminology/data/icd10fi.csv are
+derived from the FinOMOP mapping files (https://github.com/FinOMOP/FinOMOP_mappings,
+commit recorded in kanta2fhir/terminology/data/sources.json). FinOMOP is the Finnish
+OHDSI national node; OHDSI artifacts are open source and free. The Finnish code names
+originate from the Finnish national code sets maintained by THL and Kuntaliitto.
+
+LOINC
+-----
+This material contains content from LOINC (http://loinc.org). LOINC is copyright
+© Regenstrief Institute, Inc. and the Logical Observation Identifiers Names and Codes
+(LOINC) Committee and is available at no cost under the license at
+http://loinc.org/license. LOINC® is a registered United States trademark of
+Regenstrief Institute, Inc.
+
+The LOINC codes and names in labfi.csv were resolved from the OHDSI Athena standardized
+vocabularies (version recorded in sources.json).
+
+Not included
+------------
+WHO ICD-10 and ATC English titles and SNOMED CT content are not redistributed beyond
+the few SNOMED CT codes in snomed.csv used as mapping targets. WHO titles are fetched
+locally into the git-ignored vocab/ directory with tools/fetch_titles.py.

@@ -1,0 +1,13 @@
+source_unit,ucum,note
+mmHg,mm[Hg],
+x10E9/l,10*9/L,
+x10E12/l,10*12/L,
+E9/l,10*9/L,
+E12/l,10*12/L,
+µmol/l,umol/L,micro sign
+°C,Cel,
+/min,/min,
+krt/min,/min,times per minute
+kpl,{count},
+mGy.cm2,mGy.cm2,
+mGy*cm2,mGy.cm2,

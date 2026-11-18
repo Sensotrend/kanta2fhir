@@ -257,7 +257,11 @@ tests/  tests/fixtures/{real,synthetic}/
 
 1. ✅ (done 2026-11-18) Project skeleton (uv, ruff, pytest), reader, CDA header parsing, canonical Patient/Encounter, and a coverage report over the whole file.
 2. ✅ (done 2026-11-18) Entry extractors (diagnosis, risk, immunisation, procedure, lab, vitals, imaging, care plan) + narrative conversion + consolidation/dedup (Kooste fallback, versions).
-3. Terminology layer: hand-made tables, ICD-10/ATC English, the LABfi→LOINC build script and table, UCUM normalisation, FI/EN displays.
+3. ✅ (done 2026-11-18) Terminology layer: hand-made tables, ICD-10/ATC English, the LABfi→LOINC build script and table, UCUM normalisation, FI/EN displays. Notes:
+   - `tools/build_terminology.py` builds `labfi.csv` (4,222 codes; 1,079 with an approved LOINC mapping) and `icd10fi.csv` (4,083 Finnish-only codes) from FinOMOP commit `46594187` and Athena (LOINC 2.82).
+   - `tools/fetch_titles.py` fetches WHO ICD-10, ATC and LOINC titles for the codes an export uses into the git-ignored `vocab/tx_titles.csv`. Conversion itself never calls the network; without the cache the international codings simply have no display.
+   - WHO ICD-10 codes are recognised as WHO-shaped codes that are *not* in ICD10fi (D15).
+   - The hand-made tables (route, site, target disease, interpretation, result status, gender, units) cover only the codes seen in the data so far, because the THL code server's concept API could not be used. Unknown codes keep their Finnish coding only. `tools/verify_terminology.py` checks every target code against tx.fhir.org; all checks passed on 2026-11-18.
 4. Shared FHIR factories + validator wrapper (`-tx n/a`) + IG fetch.
 5. **Lab Report** builder → validates with no errors (offline).
 6. **EPS** builder → validates with no errors (offline).
