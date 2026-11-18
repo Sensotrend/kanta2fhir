@@ -209,6 +209,7 @@ def _narratives(doc: ParsedDocument) -> list[SectionNarrative]:
                 view=path[0].code,
                 title=path[-1].title,
                 xhtml=xhtml,
+                codes=tuple(step.code.code if step.code else "" for step in path),
             )
         )
     return out

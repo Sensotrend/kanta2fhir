@@ -391,6 +391,7 @@ class SectionNarrative:
     view: Coding | None
     title: str | None
     xhtml: str
+    codes: tuple[str, ...] = ()  # section codes along the path: view, phase, heading
 
 
 @dataclass(slots=True)

@@ -31,5 +31,8 @@ target-version = "py312"
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
 
+[tool.ruff.lint.per-file-ignores]
+"tools/make_synthetic_inpatient.py" = ["E501"]  # CDA XML templates
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

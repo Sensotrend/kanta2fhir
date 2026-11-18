@@ -14,6 +14,7 @@ from kanta2fhir.cda.util import HELSINKI
 from kanta2fhir.coverage import build_report, format_summary
 from kanta2fhir.fhir.datatypes import JSON
 from kanta2fhir.fhir.eps import build_patient_summaries
+from kanta2fhir.fhir.hdr import build_discharge_reports
 from kanta2fhir.fhir.lab import build_lab_reports
 from kanta2fhir.fhir.profiles import PACKAGES
 from kanta2fhir.model import Severity
@@ -27,7 +28,8 @@ Builder = Callable[[PatientResult, Terminology, str], list[tuple[str, JSON]]]
 BUILDERS: dict[str, Builder] = {
     "eps": build_patient_summaries,
     "lab": build_lab_reports,
-}  # hdr: milestone 7
+    "hdr": build_discharge_reports,
+}
 
 
 def main(argv: list[str] | None = None) -> int:

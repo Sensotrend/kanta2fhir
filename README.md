@@ -8,7 +8,7 @@ Converts Kanta health record exports (`*.ndjson` files of FHIR `DocumentReferenc
 
 The design, decisions and milestones are in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
-**Status:** milestones 1-6 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication, a coverage report, and the terminology layer (LOINC for Finnish lab codes, WHO ICD-10/ATC/SNOMED CT equivalents, English names, UCUM units), shared FHIR resource factories with a validator wrapper, **European Laboratory Report** and **European Patient Summary** documents. The Discharge Report builder is next. No FHIR documents are produced yet.
+**Status:** milestones 1-7 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication, a coverage report, and the terminology layer (LOINC for Finnish lab codes, WHO ICD-10/ATC/SNOMED CT equivalents, English names, UCUM units), shared FHIR resource factories with a validator wrapper, **European Laboratory Report**, **European Patient Summary** and **European Hospital Discharge Report** documents (the latter tested with synthetic inpatient data, `tools/make_synthetic_inpatient.py`). Final validation with a terminology server and polishing remain (milestone 8). No FHIR documents are produced yet.
 
 ## Setup
 
@@ -24,7 +24,7 @@ uv sync
 uv run kanta2fhir path/to/export.ndjson --out out/
 ```
 
-Documents are written to `out/<target>/` (`out/eps/`, `out/lab/`). Add `--validate` to run the HL7 FHIR Validator on them (no terminology checks by default; `--tx https://tx.fhir.org` for a terminology server), and `--timestamp` for reproducible output.
+Documents are written to `out/<target>/` (`out/eps/`, `out/lab/`, `out/hdr/`). Add `--validate` to run the HL7 FHIR Validator on them (no terminology checks by default; `--tx https://tx.fhir.org` for a terminology server), and `--timestamp` for reproducible output.
 
 It also writes `out/report.json`, a coverage report of what the export contains and what has been mapped, and prints a short summary. The report contains no names or personal identity codes; the patient is identified by a pseudonym (a hash of the identity code).
 

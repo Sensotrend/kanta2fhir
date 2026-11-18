@@ -1,6 +1,6 @@
 # Kanta CDA → EU FHIR documents: implementation plan
 
-Status: **draft v5: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
+Status: **milestones 1-7 implemented** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
 
 Goal: read a Kanta export (`*.ndjson` of FHIR `DocumentReference`s with embedded documents) and produce three kinds of document, each as a separate FHIR `Bundle` (type `document`) JSON file:
 
@@ -285,7 +285,12 @@ tests/  tests/fixtures/{real,synthetic}/
    - Vital signs: only LOINC codes accepted by the core vital-signs profile go to the Vital signs section; others (PEF) go to Results with category "exam". Measured body weight (3141-9) also gets the generic code 29463-7 that the core body-weight profile requires.
    - The Composition's author is the converter (a Device): the summary is generated, not written by a clinician. Encounters are not included in the summary.
    - The care plan becomes a CarePlan with a Goal (with the target values), a CareTeam and one activity per planned service; the remaining free-text parts become notes.
-7. Synthetic inpatient fixtures + **HDR** builder → validates with no errors (offline).
+7. ✅ (done 2026-11-18) Synthetic inpatient fixtures + **HDR** builder → validates with no errors (offline). Notes:
+   - `tools/make_synthetic_inpatient.py` generates `tests/fixtures/synthetic/inpatient.ndjson` (deterministic): a test-range patient with one inpatient service event (encounter type 1, assumed to be an inpatient period) and one discharge record entry with diagnoses, a procedure, three lab results, a weight and narrative headings (21, 76, 55, 62, 75). Procedure codes are illustrative; everything else uses real code systems.
+   - The synthetic discharge report validates with 0 errors offline and against tx.fhir.org. The real export (outpatient visits only) gives 0 discharge reports, as expected.
+   - Content of a stay = the items and narratives of the documents of that service event. Narratives are routed by Kanta heading: 21 → Admission evaluation, 62 → Discharge summary, 55 → Discharge medications (text only, no structured medication exists), 75 → Plan of care, other care-delivery (phase 15) narratives → Hospital course. Headings 13/51/53/64 are shown from the structured entries instead. The Hospital course section always exists (with a generated stay summary), which satisfies cmp-hdr-2.
+   - The stay's diagnoses are discharge diagnoses on the Encounter (use DD, main diagnosis rank 1) and are active in the report. Allergies and alerts are patient-level and included in every report.
+   - Composition author = the author of the latest record entry of the stay; identifier = that document's id.
 8. Final validation **with a terminology server**, fixes, documentation of accepted warnings; CLI polish, golden tests, README.
 
 ## 5. Out of scope (for now)
