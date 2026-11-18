@@ -1,6 +1,6 @@
 # Kanta CDA → EU FHIR documents: implementation plan
 
-Status: **draft v4: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
+Status: **draft v5: decisions recorded** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
 
 Goal: read a Kanta export (`*.ndjson` of FHIR `DocumentReference`s with embedded documents) and produce three kinds of document, each as a separate FHIR `Bundle` (type `document`) JSON file:
 
@@ -115,7 +115,7 @@ Since only CDA payloads are expected (D9), there is no general format-plugin fra
 
 | Kanta OID | FHIR system(s) | English source |
 |---|---|---|
-| `1.2.246.537.6.1.1999` ICD-10 FI | `urn:oid:1.2.246.537.6.1.1999` **plus** `http://hl7.org/fhir/sid/icd-10` when the code is a WHO code | WHO ICD-10 English titles. Finnish 5-character codes (Q32.11) get the parent WHO code's title only as a translation hint, or none |
+| `1.2.246.537.6.1.1999` ICD-10 FI | `urn:oid:1.2.246.537.6.1.1999` **plus** `http://hl7.org/fhir/sid/icd-10` when the code is a WHO code | D15: **WHO codes** use the WHO English title (from tx.fhir.org); **Finnish-only codes** use the FinOMOP ICD10fi English name, as a translation on the OID coding only |
 | `1.2.246.537.6.96.2008` physiological measurements | `http://loinc.org` | LOINC display |
 | `1.2.246.537.6.32.2007` ATC | `http://www.whocc.no/atc` | WHO ATC names |
 | `1.2.246.537.6.55` VNR | `urn:oid:1.2.246.537.6.55` | Product names are language-neutral |
@@ -286,21 +286,27 @@ tests/  tests/fixtures/{real,synthetic}/
 | D12 | Past problems | Emit the IPS past problems section (11348-0) at its IPS position, even though EPS does not define it |
 | D13 | Terminology server | `tx.fhir.org` for the current (test data) phase |
 | D14 | FinOMOP licence | Accepted as open, based on OHDSI's statement that its artifacts are open source and free ([forum](https://forums.ohdsi.org/t/omop-licensing-information/3147)) and FinOMOP's status as an OHDSI national node sharing OHDSI's principles. Derived tables are committed with attribution. Optionally, ask FinOMOP to add an explicit LICENSE file to remove any doubt |
+| D15 | ICD-10 English names | Use both sources, each for the codes only it covers: WHO titles for WHO codes, ICD10fi names for Finnish-only codes. Based on a validator test against tx.fhir.org (§9) |
 
 ## 7. Open points
 
-Resolved: HDR version (D2), past problems section (D12), terminology server (D13), FinOMOP licence (D14).
+Resolved: HDR version (D2), past problems section (D12), terminology server (D13), FinOMOP licence (D14), ICD-10 English names (D15).
 
-1. **ICD-10 English names.** FinOMOP also has an `ICD10fi` vocabulary with English names for the Finnish ICD-10 codes, which could cover D8 for diagnoses under the same terms as D14. Proposal: use it, with the same pinned-commit and attribution approach. The alternative is WHO ICD-10 English titles, which have their own licence terms.
+No open points at the moment.
 
 ### Notes on resolved points
 - Past problems (D12): EPS 1.0.0-ballot does not define the IPS `sectionPastProblems` (11348-0) slice, because its Composition is based on EU core rather than on the IPS Composition. Section slicing is *open*, so the extra section is allowed. The validator may report it as an unrecognised (non-slice) section, as information or a warning; this is reviewed at milestone 6. The alternatives considered were putting past problems into `sectionPatientHx` (11329-0), or keeping them in `sectionProblems` as inactive.
 - FinOMOP licence (D14): OHDSI's statement does not name a specific licence (e.g. Apache 2.0), so attribution is kept as a safe default. The FinOMOP wiki page cited for the node status needs a login, so it was not checked here.
+- ICD-10 names (D15): the intended rule was "use ICD10fi unless WHO titles validate better". The test (§9) showed the two sources do not overlap, so the question became which source covers which codes.
 - The git history keeps the earlier wording of each question.
 
 ---
 
 ## 8. Athena vocabulary download (needed for milestone 3)
+
+**Done (2026-11-18):** the bundle is in `vocab/athena/` (git-ignored). Versions: OMOP vocabularies v5.0 29-AUG-26, LOINC 2.82. A trial join resolved all 9 lab codes in the test data to standard, valid LOINC concepts: 4591→1920-8, 4600→14682-9, 2516→2885-2, 1414→14731-4, 1471→14749-6, 2522→24351-9, 6466→94500-6, 1270→34534-8, 1462→15074-8.
+
+Original instructions:
 
 Only the **LOINC** vocabulary is needed, to resolve the FinOMOP OMOP concept ids to LOINC codes.
 
@@ -314,3 +320,28 @@ Only the **LOINC** vocabulary is needed, to resolve the FinOMOP OMOP concept ids
 7. Only `CONCEPT.csv` is used. Despite the extension it is **tab-separated**. The build script records the vocabulary version from `VOCABULARY.csv` in the derived table.
 
 LOINC concept ids are stable across Athena releases, so the exact release does not matter much. The script reports any FinOMOP target concept that is missing or deprecated (`invalid_reason` set) in the downloaded release.
+
+---
+
+## 9. Experiment: ICD-10 English names vs. tx.fhir.org (2026-11-18)
+
+Setup: HL7 FHIR Validator 7.0.6 (`.tools/validator_cli.jar`, git-ignored), FHIR 4.0.1, `-tx https://tx.fhir.org`. The input was a collection Bundle of Conditions, each with a single `code.coding`. tx.fhir.org serves WHO ICD-10 as `http://hl7.org/fhir/sid/icd-10`, version `2019-covid-expanded`, and checks English displays.
+
+Finding 1: **ICD10fi and WHO ICD-10 do not overlap.** FinOMOP `ICD10fi.usagi.csv` (4,942 rows) contains only codes that Finland added. The common WHO codes (E55.9, L43.3, J46, E11.9 …) are in the OMOP standard ICD10 vocabulary instead, so ICD10fi has no English name for them. Even the 71 ICD10fi codes that look like WHO codes (X85.0, F61.0, B07.9, W71 …) are unknown to tx.fhir.org as WHO codes, because they are Finnish subdivisions or additions.
+
+Finding 2, validator results:
+
+| Case | Coding | Result |
+|---|---|---|
+| A | WHO code + WHO system + WHO title (E55.9, L43.3, J46, E11.9) | No terminology issues |
+| B | Finnish code + WHO system + ICD10fi English name (Q32.11, X85.0, F61.0, B07.9, W71) | **Error**: unknown code in `http://hl7.org/fhir/sid/icd-10` |
+| C | Finnish code + `urn:oid:1.2.246.537.6.1.1999` + ICD10fi English name | **Warning**: code system unknown, cannot be validated |
+| D | Parent WHO code (Q32.1) + WHO title | No terminology issues |
+| E (control) | WHO code E55.9 + wrong title | **Error**: wrong display, with the expected WHO title given |
+
+Conclusions (→ D15):
+- A WHO-system coding must carry the **WHO title**. tx.fhir.org checks the title, and no ICD10fi name exists for these codes anyway.
+- Finnish-only codes must **never** be sent with the WHO system (error). They stay on the OID system, which tx.fhir.org cannot check (an expected, accepted warning). The ICD10fi English name is attached there as the English translation.
+- Finnish-only codes get **no** WHO coding. Mapping them to the parent WHO code (e.g. Q32.11 → Q32.1) would validate, but it changes the meaning (broader). It is left out for now and could be added later as an explicit, separately marked mapping.
+- WHO titles are fetched by a build script via tx.fhir.org `$lookup` (codes only) into the git-ignored `vocab/`. They are not committed, because WHO holds the ICD-10 copyright.
+

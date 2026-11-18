@@ -9,3 +9,6 @@ out/
 
 # Locally downloaded vocabularies (Athena bundles, raw downloads)
 vocab/
+
+# Downloaded tools (FHIR validator jar)
+.tools/
