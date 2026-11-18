@@ -152,3 +152,29 @@ def test_eps_validates(tmp_path: Path) -> None:
     if not validator_available():
         pytest.skip("FHIR validator not available")
     assert main([str(SAMPLE), "--out", str(tmp_path), "--targets", "eps", "--validate"]) == 0
+
+
+@pytest.mark.parametrize(
+    ("risk_type", "agents", "expected"),
+    [
+        ("L9", False, True),  # other drug reaction
+        ("L", False, True),
+        ("A2", False, True),  # other allergies
+        ("ALLERG", False, True),  # deprecated "Allergia"
+        ("LAAKRE", False, True),  # deprecated "Lääkereaktio"
+        ("LAAVAI", False, False),  # things affecting medication: an alert
+        ("E1", False, False),  # microbes / precautions
+        ("S", False, False),
+        ("S", True, True),  # a causative agent makes it an allergy/intolerance
+    ],
+)
+def test_allergy_rule(risk_type: str, agents: bool, expected: bool) -> None:
+    from kanta2fhir.fhir.eps import is_allergy
+    from kanta2fhir.model import Coding, RiskItem, SourceRef
+
+    risk = RiskItem(
+        source=SourceRef(document_id="d", line=1, section="s"),
+        risk_type=Coding(risk_type, "1.2.246.537.5.40034.2006"),
+        agents=[Coding("M01AE03", "1.2.246.537.6.32.2007")] if agents else [],
+    )
+    assert is_allergy(risk) is expected

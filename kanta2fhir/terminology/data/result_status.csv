@@ -1,5 +1,11 @@
 source_code,fhir_status,note
-F,final,seen in data (Lopullinen tulos)
-P,preliminary,assumed to follow HL7 v2 result status; not seen in data
-C,corrected,assumed to follow HL7 v2 result status; not seen in data
-X,cancelled,assumed to follow HL7 v2 result status; not seen in data
+C,corrected,Korjaava vastaus
+D,entered-in-error,Poistaa vastaukseen liittyviä tietoja
+F,final,Lopullinen tulos
+I,registered,"Näyte laboratoriossa, odottaa vastausta"
+P,preliminary,Alustava vastaus
+R,preliminary,Tarkistamaton vastaus (unverified)
+S,preliminary,Osittainen vastaus (partial; FHIR Observation has no partial status)
+U,final,Vastauksen arvo muutetaan lopulliseksi
+W,entered-in-error,Väärä vastaus
+X,cancelled,Tutkimuksesta ei saada vastauksia

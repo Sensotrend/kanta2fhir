@@ -7,8 +7,8 @@ and code systems). Everything is invented:
 - all organisation and document OIDs are under 1.2.246.10.99999999 / 1.2.246.99.9999999;
 - clinical codes are real code system codes, but procedure codes are illustrative only.
 
-The inpatient service event uses encompassingEncounterCode 1, which is *assumed* to mean an
-inpatient period (osastohoitojakso); only code 2 (outpatient visit) occurs in real data.
+The inpatient service event uses encompassingEncounterCode 1, Osastohoitojakso (inpatient
+period) in eArkisto - Palvelutapahtuman laji; only code 2 (outpatient visit) occurs in real data.
 
 Output: tests/fixtures/synthetic/inpatient.ndjson (deterministic).
 Usage: uv run python tools/make_synthetic_inpatient.py

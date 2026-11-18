@@ -1,7 +1,7 @@
 """European Hospital Discharge Report (hl7.fhir.eu.hdr 1.0.0): one document per inpatient stay.
 
-An inpatient stay is a service event whose Kanta encounter type is 1 (assumed to be an
-inpatient period, see ENCOUNTER_CLASS). Its content is everything recorded in the documents
+An inpatient stay is a service event whose Kanta encounter type (Palvelutapahtuman laji) is
+1, Osastohoitojakso. Its content is everything recorded in the documents
 of that service event:
 - structured entries → Diagnostic summary, Significant procedures, Significant results,
   Vital signs (and the patient's allergies and alerts);
@@ -46,7 +46,7 @@ PROFILES = {
 
 LOINC = "http://loinc.org"
 DIAGNOSIS_ROLE = "http://terminology.hl7.org/CodeSystem/diagnosis-role"
-INPATIENT = "1"  # hl7fi:encompassingEncounterCode for an inpatient period (assumed)
+INPATIENT = "1"  # Palvelutapahtuman laji 1 = Osastohoitojakso (inpatient period)
 
 # Kanta heading codes (1.2.246.537.6.14.2006) whose narrative goes to a specific section
 HEADING_SECTIONS = {

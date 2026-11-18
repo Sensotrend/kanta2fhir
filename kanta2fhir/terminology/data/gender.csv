@@ -1,3 +1,6 @@
 source_code,fhir_gender,note
+0,unknown,Tuntematon
 1,male,Mies
 2,female,Nainen
+3,unknown,Ei tiedossa/Määriteltävissä (deprecated)
+9,unknown,Määrittelemättä

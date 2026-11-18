@@ -70,8 +70,8 @@ Original Finnish codes are always kept. International codes (LOINC, WHO ICD-10, 
 ## Limitations
 
 - Kanta exports contain no structured medication, so the medication sections are empty, with the reason "unavailable". The care plan's free-text medication list is shown as text.
-- No real inpatient data was available. The Discharge Report is tested with synthetic data (`tools/make_synthetic_inpatient.py`), and Kanta encounter type 1 is *assumed* to mean an inpatient period.
-- The small Finnish code tables (vaccination route and site, vaccine target disease, result status) cover the codes seen so far. Unknown codes keep only their Finnish coding.
+- No real inpatient data was available. The Discharge Report is tested with synthetic data (`tools/make_synthetic_inpatient.py`). Kanta encounter type 1 (Osastohoitojakso) marks an inpatient period, as listed in the national code server.
+- The small Finnish code tables (vaccination route and site, vaccine target disease, interpretation, result status, gender) cover the complete code lists from THL Koodistopalvelu, read 2026-11-18 (see `kanta2fhir/terminology/data/kanta_codes.md`). "Other" codes and a few with no equivalent keep only their Finnish coding.
 - FinOMOP maps a few Finnish lab codes to LOINC panel codes; see [docs/VALIDATION.md](docs/VALIDATION.md).
 
 ## Terminology data

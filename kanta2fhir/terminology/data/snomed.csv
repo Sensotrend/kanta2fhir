@@ -1,5 +1,46 @@
 source_system,source_code,source_display,snomed_code,snomed_display,note
-1.2.246.537.6.111.2007,ID,Ihonsisäisesti,372464004,Intradermal route,vaccination route
-1.2.246.537.6.110.2007,VO,Vasen olkavarsi,368208006,Left upper arm structure,injection site
-1.2.246.537.6.609.201501,2,Kurkkumätä,397430003,Diphtheria caused by Corynebacterium diphtheriae,vaccine target disease
-1.2.246.537.6.609.201501,7,Jäykkäkouristus,76902006,Tetanus,vaccine target disease
+1.2.246.537.6.111.2007,ID,Ihonsisäisesti,372464004,Intradermal route,AR/YDIN - Rokotustapa
+1.2.246.537.6.111.2007,IM,Lihaksensisäisesti,78421000,Intramuscular route,AR/YDIN - Rokotustapa
+1.2.246.537.6.111.2007,IN,Nenänsisäisesti,46713006,Nasal route,AR/YDIN - Rokotustapa
+1.2.246.537.6.111.2007,PO,Suun kautta,26643006,Oral route,AR/YDIN - Rokotustapa
+1.2.246.537.6.111.2007,SC,Ihonalaisesti,34206005,Subcutaneous route,AR/YDIN - Rokotustapa
+1.2.246.537.6.110.2007,OO,Oikea olkavarsi,368209003,Right upper arm structure,AR/YDIN - Pistoskohta
+1.2.246.537.6.110.2007,VO,Vasen olkavarsi,368208006,Left upper arm structure,AR/YDIN - Pistoskohta
+1.2.246.537.6.110.2007,OR,Oikea reisi,11207009,Structure of right thigh,AR/YDIN - Pistoskohta
+1.2.246.537.6.110.2007,VR,Vasen reisi,61396006,Structure of left thigh,AR/YDIN - Pistoskohta
+1.2.246.537.6.110.2007,OP,Oikea pakara,723980000,Structure of right buttock,AR/YDIN - Pistoskohta
+1.2.246.537.6.110.2007,VP,Vasen pakara,723979003,Structure of left buttock,AR/YDIN - Pistoskohta
+1.2.246.537.6.609.201501,1,Kolera,63650001,Cholera,THL - Rokotussuoja
+1.2.246.537.6.609.201501,2,Kurkkumätä,397430003,Diphtheria caused by Corynebacterium diphtheriae,THL - Rokotussuoja
+1.2.246.537.6.609.201501,3,Haemophilus influenzae b -infektio,709410003,Haemophilus influenzae type b infection,THL - Rokotussuoja
+1.2.246.537.6.609.201501,4,Meningokokin aiheuttama infektio,23511006,Meningococcal infectious disease,THL - Rokotussuoja
+1.2.246.537.6.609.201501,5,Hinkuyskä,27836007,Pertussis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,6,Streptococcus pneumoniae -infektio,16814004,Pneumococcal infectious disease,THL - Rokotussuoja
+1.2.246.537.6.609.201501,7,Jäykkäkouristus,76902006,Tetanus,THL - Rokotussuoja
+1.2.246.537.6.609.201501,8,Tuberkuloosi,56717001,Tuberculosis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,9,Lavantauti,4834000,Typhoid fever,THL - Rokotussuoja
+1.2.246.537.6.609.201501,10,Puutiaisaivotulehdus,712986001,Encephalitis caused by tick-borne encephalitis virus,THL - Rokotussuoja
+1.2.246.537.6.609.201501,11,Japanin aivotulehdus,52947006,Japanese encephalitis virus disease,THL - Rokotussuoja
+1.2.246.537.6.609.201501,12,Influenssa,6142004,Influenza,THL - Rokotussuoja
+1.2.246.537.6.609.201501,13,Hepatiitti A -viruksen aiheuttama maksatulehdus,40468003,"Viral hepatitis, type A",THL - Rokotussuoja
+1.2.246.537.6.609.201501,14,Hepatiitti B -viruksen aiheuttama maksatulehdus,66071002,Type B viral hepatitis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,15,Tuhkarokko,14189004,Measles,THL - Rokotussuoja
+1.2.246.537.6.609.201501,16,Sikotauti,36989005,Mumps,THL - Rokotussuoja
+1.2.246.537.6.609.201501,17,Polio,398102009,Acute poliomyelitis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,18,Vesikauhu,14168008,Rabies,THL - Rokotussuoja
+1.2.246.537.6.609.201501,19,Rotaviruksen aiheuttama suolistoinfektio,18624000,Disease caused by Rotavirus,THL - Rokotussuoja
+1.2.246.537.6.609.201501,20,Vihurirokko,36653000,Rubella,THL - Rokotussuoja
+1.2.246.537.6.609.201501,21,Vesirokko,38907003,Varicella,THL - Rokotussuoja
+1.2.246.537.6.609.201501,22,Keltakuume,16541001,Yellow fever,THL - Rokotussuoja
+1.2.246.537.6.609.201501,23,Ihmisen papilloomaviruksen aiheuttama infektio,240532009,Human papilloma virus infection,THL - Rokotussuoja
+1.2.246.537.6.609.201501,24,Pernarutto,409498004,Anthrax,THL - Rokotussuoja
+1.2.246.537.6.609.201501,25,Bruselloosi,75702008,Brucellosis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,26,Rutto,58750007,Plague,THL - Rokotussuoja
+1.2.246.537.6.609.201501,27,Pilkkukuume,39111003,Louse-borne typhus,THL - Rokotussuoja (epidemic typhus)
+1.2.246.537.6.609.201501,28,Isorokko,67924001,Smallpox,THL - Rokotussuoja
+1.2.246.537.6.609.201501,29,COVID-19-tauti,840539006,COVID-19,THL - Rokotussuoja
+1.2.246.537.6.609.201501,30,Vyöruusu,4740000,Herpes zoster,THL - Rokotussuoja
+1.2.246.537.6.609.201501,31,M-rokko,359814004,Mpox,THL - Rokotussuoja
+1.2.246.537.6.609.201501,32,Denguekuume,38362002,Dengue,THL - Rokotussuoja
+1.2.246.537.6.609.201501,33,RS-viruksen aiheuttama alahengitystieinfektio,55735004,Respiratory syncytial virus infection,THL - Rokotussuoja
+1.2.246.537.6.609.201501,35,Chikungunya,111864006,Chikungunya fever,THL - Rokotussuoja

@@ -30,9 +30,8 @@ from kanta2fhir.terminology import Terminology
 V3_ACT_CODE = "http://terminology.hl7.org/CodeSystem/v3-ActCode"
 PARTICIPANT_TYPE = "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
 
-# hl7fi:encompassingEncounterCode (1.2.246.537.5.40156.2008) → Encounter.class.
-# Only code 2 (Avohoitokäyntitieto, outpatient visit) is seen in data; code 1 is assumed to be
-# an inpatient period (osastohoitojakso).
+# hl7fi:encompassingEncounterCode, eArkisto - Palvelutapahtuman laji (1.2.246.537.5.40156.2008):
+# 1 Osastohoitojakso (inpatient period), 2 Avohoitokäyntitieto (outpatient visit).
 ENCOUNTER_CLASS = {
     "1": ("IMP", "inpatient encounter"),
     "2": ("AMB", "ambulatory"),

@@ -74,8 +74,13 @@ PERFORMER_FUNCTION = "http://terminology.hl7.org/CodeSystem/v2-0443"
 
 # Kanta code values used in the mapping rules
 PERMANENT = "PYS"  # 2.1 Pysyväisluonteinen
-CERTAIN = "TOD"  # 2.2 Todennäköinen tai varma
-CRITICAL_RISK = "1"  # 13.6 Kriittinen riski
+# Code lists from THL Koodistopalvelu, see kanta2fhir/terminology/data/kanta_codes.md
+CERTAIN = {"TOD", "VAR"}  # Varmuusaste: Todennäköinen tai varma, Varma (EP = epäilty)
+RISK_CRITICALITY = {"1": "high", "2": "low"}  # Riskitiedon aste: kriittinen, huomioitava
+# Riskitiedon tyyppi: A Muut allergiat, L Lääkereaktiot ja -allergiat (+ child codes such as
+# L9), and the deprecated top-level codes ALLERG (Allergia) and LAAKRE (Lääkereaktio).
+ALLERGY_RISK_TYPE_PREFIXES = ("A", "L")
+ALLERGY_RISK_TYPES = {"ALLERG", "LAAKRE"}
 
 # The core vital-signs profiles require a "magic" LOINC code; more specific codes from Kanta
 # get it as an additional coding (e.g. measured body weight 3141-9 → body weight 29463-7).
@@ -139,11 +144,18 @@ def is_active(c: Condition) -> bool:
 
 
 def is_allergy(r: RiskItem) -> bool:
-    """Allergy/intolerance rule: a risk with a causative agent, or of a drug-reaction type
-    (Kanta risk type codes L*). Other risks become alerts."""
+    """Allergy/intolerance rule: a risk with a causative agent, or of an allergy or
+    drug-reaction risk type. Other risks (infections, implants, care limitations …) are alerts."""
     if r.agents:
         return True
-    return r.risk_type is not None and r.risk_type.code.upper().startswith("L")
+    if r.risk_type is None:
+        return False
+    code = r.risk_type.code.upper()
+    if code in ALLERGY_RISK_TYPES:
+        return True
+    # Hierarchical codes: "L", "L9", "A2" … but not the other deprecated words (LAAVAI is
+    # "Lääkitykseen vaikuttavat asiat", things affecting medication: an alert).
+    return code[:1] in ALLERGY_RISK_TYPE_PREFIXES and (len(code) == 1 or code[1:].isdigit())
 
 
 class PatientSummaryBuilder:
@@ -246,7 +258,7 @@ class PatientSummaryBuilder:
         return refs, n.table(["Diagnoosi", "Koodi", "Pysyvyys", "Varmuus", "Pvm"], rows)
 
     def _condition(self, c: Condition, active: bool) -> JSON:
-        certain = c.certainty is None or c.certainty.code == CERTAIN
+        certain = c.certainty is None or c.certainty.code in CERTAIN
         category = "problem-list-item"
         return self.rs.add(
             compact(
@@ -286,8 +298,8 @@ class PatientSummaryBuilder:
                     "description": r.text,
                 }
             )
-            critical = r.severity is not None and r.severity.code == CRITICAL_RISK
-            certain = r.certainty is None or r.certainty.code == CERTAIN
+            criticality = RISK_CRITICALITY.get(r.severity.code) if r.severity else None
+            certain = r.certainty is None or r.certainty.code in CERTAIN
             refs.append(
                 self.rs.add(
                     compact(
@@ -300,7 +312,7 @@ class PatientSummaryBuilder:
                                 ALLERGY_VERIFICATION, "confirmed" if certain else "unconfirmed"
                             ),
                             "category": ["medication"] if r.agents else [],
-                            "criticality": "high" if critical else None,
+                            "criticality": criticality,
                             "code": substance,
                             "patient": self.subject,
                             "recordedDate": r.date,

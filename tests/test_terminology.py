@@ -129,3 +129,21 @@ def test_tx_client_parses_responses(monkeypatch: pytest.MonkeyPatch) -> None:
     assert client.lookup(SNOMED, "76902006").display == "Tetanus"
     v = client.validate(SNOMED, "76902006", "Wrong")
     assert not v.valid and v.message == "Wrong display"
+
+
+def test_code_lists_from_code_server(terminology: Terminology) -> None:
+    # Pistoskohta: right buttock (OP = oikea pakara) and left buttock (VP) are not swapped
+    [op] = terminology.equivalents(Coding("OP", "1.2.246.537.6.110.2007"))
+    [vp] = terminology.equivalents(Coding("VP", "1.2.246.537.6.110.2007"))
+    assert (op.code, op.display) == ("723980000", "Structure of right buttock")
+    assert (vp.code, vp.display) == ("723979003", "Structure of left buttock")
+    # Rokotussuoja 29 COVID-19; 99 "other" has no mapping
+    [covid] = terminology.equivalents(Coding("29", "1.2.246.537.6.609.201501"))
+    assert covid.code == "840539006"
+    assert terminology.equivalents(Coding("99", "1.2.246.537.6.609.201501")) == []
+    neg = terminology.interpretation(Coding("NEG", "1.2.246.537.5.78.1997"))
+    assert neg is not None and neg.code == "NEG"
+    assert terminology.interpretation(Coding("TYHJÄ", "1.2.246.537.5.78.1997")) is None
+    status = Coding("W", "1.2.246.537.5.85.1997")
+    assert terminology.result_status(status) == "entered-in-error"
+    assert terminology.gender(Coding("9", "1.2.246.537.5.1.1997")) == "unknown"
