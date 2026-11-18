@@ -184,7 +184,7 @@ def _mark_superseded(docs: list[ParsedDocument], issues: list[Issue]) -> None:
         )
 
 
-def _instant(value: str | None) -> datetime:
+def instant(value: str | None) -> datetime:
     """Sort key for FHIR date/dateTime strings (missing values sort first)."""
     if not value:
         return datetime.min.replace(tzinfo=UTC)
@@ -208,7 +208,7 @@ def _consolidate_patient(hetu: str, docs: list[ParsedDocument], issues: list[Iss
 
     # Originals before summaries, newest first.
     current = [d for d in docs if d.is_current]
-    current.sort(key=lambda d: (d.kind != DocumentKind.SUMMARY, _instant(d.header.effective_time)))
+    current.sort(key=lambda d: (d.kind != DocumentKind.SUMMARY, instant(d.header.effective_time)))
     current.reverse()
     demographics = [d.header.patient for d in current]
 

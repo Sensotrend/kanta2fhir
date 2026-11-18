@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 
 from kanta2fhir.model import Issue
+from kanta2fhir.pipeline import PipelineResult, run
 from kanta2fhir.reader import ReadResult, read_ndjson
 from kanta2fhir.record import ParsedDocument, parse_documents
 
@@ -38,3 +39,22 @@ def sample_parsed(sample_read: ReadResult) -> list[ParsedDocument]:
 
 def by_line(parsed: list[ParsedDocument], line: int) -> ParsedDocument:
     return next(d for d in parsed if d.source.line == line)
+
+
+CAREPLAN = FIXTURES / "real" / "careplan.ndjson"  # Terveys- ja hoitosuunnitelma
+RESULTS = FIXTURES / "real" / "results.ndjson"  # Laboratorio, Radiologia, Sisätaudit (vitals)
+
+
+@pytest.fixture(scope="session")
+def sample_result() -> PipelineResult:
+    return run(SAMPLE)
+
+
+@pytest.fixture(scope="session")
+def careplan_result() -> PipelineResult:
+    return run(CAREPLAN)
+
+
+@pytest.fixture(scope="session")
+def results_result() -> PipelineResult:
+    return run(RESULTS)

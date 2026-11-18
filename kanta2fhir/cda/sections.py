@@ -34,6 +34,7 @@ class EntryRef:
     path: tuple[SectionStep, ...]
     element: Element
     entry_template_ids: tuple[str, ...]  # templateIds on the <entry> element itself
+    sections: tuple[Element, ...] = ()  # the section elements along the path (outermost first)
 
     @property
     def kind(self) -> str:
@@ -59,31 +60,44 @@ class EntryRef:
 
 def iter_sections(root: Element) -> Iterator[tuple[tuple[SectionStep, ...], Element]]:
     """Yield every section with its full path (depth first, document order)."""
+    for path, chain in _iter_chains(root):
+        yield path, chain[-1]
+
+
+def _iter_chains(
+    root: Element,
+) -> Iterator[tuple[tuple[SectionStep, ...], tuple[Element, ...]]]:
     body = find(root, "h:component/h:structuredBody")
     if body is None:
         return
     for comp in findall(body, "h:component"):
         section = find(comp, "h:section")
         if section is not None:
-            yield from _walk(section, ())
+            yield from _walk(section, (), ())
 
 
 def _walk(
-    section: Element, parent: tuple[SectionStep, ...]
-) -> Iterator[tuple[tuple[SectionStep, ...], Element]]:
+    section: Element, parent: tuple[SectionStep, ...], chain: tuple[Element, ...]
+) -> Iterator[tuple[tuple[SectionStep, ...], tuple[Element, ...]]]:
     path = (*parent, SectionStep(coding(find(section, "h:code")), text(section, "h:title")))
-    yield path, section
+    chain = (*chain, section)
+    yield path, chain
     for comp in findall(section, "h:component"):
         child = find(comp, "h:section")
         if child is not None:
-            yield from _walk(child, path)
+            yield from _walk(child, path, chain)
 
 
 def iter_entries(root: Element) -> Iterator[EntryRef]:
     """Yield the clinical statement of every ``entry`` in every section."""
-    for path, section in iter_sections(root):
-        for entry in findall(section, "h:entry"):
+    for path, chain in _iter_chains(root):
+        for entry in findall(chain[-1], "h:entry"):
             for child in entry:
                 if not isinstance(child.tag, str) or child.tag == f"{H}templateId":
                     continue  # skip comments and templateIds
-                yield EntryRef(path=path, element=child, entry_template_ids=template_ids(entry))
+                yield EntryRef(
+                    path=path,
+                    element=child,
+                    entry_template_ids=template_ids(entry),
+                    sections=chain,
+                )

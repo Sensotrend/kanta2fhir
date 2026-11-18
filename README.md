@@ -8,7 +8,7 @@ Converts Kanta health record exports (`*.ndjson` files of FHIR `DocumentReferenc
 
 The design, decisions and milestones are in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
-**Status:** milestone 1 is done (reader, CDA header parsing, patient/encounter assembly, coverage report). No FHIR documents are produced yet.
+**Status:** milestones 1-2 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication and a coverage report. No FHIR documents are produced yet.
 
 ## Setup
 

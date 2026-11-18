@@ -7,74 +7,105 @@ document id (an OID).
 
 from __future__ import annotations
 
-from collections import Counter
+from collections import Counter, defaultdict
+from dataclasses import fields
 from typing import Any
 
 from kanta2fhir import __version__, hetu
 from kanta2fhir.cda.sections import iter_entries, iter_sections
-from kanta2fhir.model import DocumentKind, Issue
-from kanta2fhir.reader import ReadResult
-from kanta2fhir.record import ParsedDocument, PatientRecord
-
-# Mapping status per entry key. Milestone 2 fills this in as extractors are added.
-NOT_MAPPED = "not-mapped"
+from kanta2fhir.extract import DocumentExtraction, Outcome
+from kanta2fhir.model import ClinicalData, Issue
+from kanta2fhir.pipeline import PatientResult, PipelineResult
 
 
-def build_report(
-    input_name: str,
-    read: ReadResult,
-    parsed: list[ParsedDocument],
-    records: list[PatientRecord],
-    issues: list[Issue],
-) -> dict[str, Any]:
-    all_issues = [*read.issues, *issues, *(i for r in records for i in r.issues)]
-    documents = [_document_entry(d) for d in parsed]
+def build_report(input_name: str, result: PipelineResult) -> dict[str, Any]:
+    extractions = [x for p in result.patients for x in p.extractions]
+    all_issues = result.all_issues
 
     entry_types: dict[str, dict[str, Any]] = {}
-    for doc in parsed:
-        for entry in iter_entries(doc.root):
+    displays: dict[str, str | None] = {}
+    doc_counts: Counter[str] = Counter()
+    for x in extractions:
+        for entry in iter_entries(x.document.root):
+            displays.setdefault(entry.key, entry.code.display if entry.code else None)
+        for key in {k for k, _ in x.outcomes}:
+            doc_counts[key] += 1
+        for (key, outcome), n in x.outcomes.items():
             info = entry_types.setdefault(
-                entry.key,
+                key,
                 {
-                    "element": entry.kind,
-                    "display": entry.code.display if entry.code else None,
+                    "element": key.split(" ", 1)[0],
+                    "display": None,
                     "count": 0,
-                    "count_current_originals": 0,
                     "documents": 0,
-                    "status": NOT_MAPPED,
+                    "outcomes": {},
                 },
             )
-            info["count"] += 1
-            if doc.is_current and doc.kind != DocumentKind.SUMMARY:
-                info["count_current_originals"] += 1
-        for key in {e.key for e in iter_entries(doc.root)}:
-            entry_types[key]["documents"] += 1
+            info["count"] += n
+            info["outcomes"][outcome.value] = info["outcomes"].get(outcome.value, 0) + n
+    for key, info in entry_types.items():
+        info["display"] = displays.get(key)
+        info["documents"] = doc_counts[key]
+        info["status"] = _status(info["outcomes"])
+
+    outcome_totals: Counter[str] = Counter()
+    for info in entry_types.values():
+        outcome_totals.update(info["outcomes"])
 
     return {
         "generator": {"name": "kanta2fhir", "version": __version__},
         "input": {
             "file": hetu.redact(input_name),
-            "lines": read.lines,
-            "documents_read": len(read.documents),
-            "documents_parsed": len(parsed),
+            "lines": result.read.lines,
+            "documents_read": len(result.read.documents),
+            "documents_parsed": len(result.parsed),
         },
-        "patients": [_patient_entry(r) for r in records],
+        "patients": [_patient_entry(p) for p in result.patients],
         "summary": {
-            "documents_by_kind": dict(Counter(d.kind.value for d in parsed)),
-            "current_documents": sum(1 for d in parsed if d.is_current),
+            "documents_by_kind": dict(Counter(d.kind.value for d in result.parsed)),
+            "current_documents": sum(1 for d in result.parsed if d.is_current),
             "templates": dict(
-                Counter(d.header.template_ids[-1] for d in parsed if d.header.template_ids)
+                Counter(d.header.template_ids[-1] for d in result.parsed if d.header.template_ids)
             ),
+            "entries_by_outcome": dict(outcome_totals),
             "entry_types": dict(sorted(entry_types.items(), key=lambda kv: -kv[1]["count"])),
             "issues_by_severity": dict(Counter(i.severity.value for i in all_issues)),
         },
         "issues": [_issue_entry(i) for i in all_issues],
-        "documents": documents,
+        "documents": [_document_entry(x) for x in extractions],
     }
 
 
-def _patient_entry(record: PatientRecord) -> dict[str, Any]:
+def _status(outcomes: dict[str, int]) -> str:
+    """One word per entry type: mapped, partial, context, not-mapped, failed, superseded."""
+    keys = set(outcomes)
+    if Outcome.MAPPED.value in keys and keys <= {Outcome.MAPPED.value, Outcome.SUPERSEDED.value}:
+        return "mapped"
+    if len(keys) == 1:
+        return next(iter(keys))
+    return "partial"
+
+
+def _clinical_counts(data: ClinicalData) -> dict[str, int]:
+    return {f.name: len(getattr(data, f.name)) for f in fields(data)}
+
+
+def _patient_entry(p: PatientResult) -> dict[str, Any]:
+    record = p.record
     linked = sum(len(e.documents) for e in record.encounters.values())
+    stats = p.stats
+    names = sorted(set(stats.from_originals) | set(stats.from_summaries))
+    consolidation = {
+        name: {
+            "from_originals": stats.from_originals[name],
+            "from_summaries": stats.from_summaries[name],
+            "duplicates_dropped": stats.duplicates_dropped[name],
+            "summary_dropped_origin_present": stats.summary_dropped_origin_present[name],
+            "summary_used": stats.summary_used[name],
+            "result": len(getattr(p.clinical, name)),
+        }
+        for name in names
+    }
     return {
         "pseudonym": record.patient.pseudonym,
         "documents": len(record.documents),
@@ -97,11 +128,18 @@ def _patient_entry(record: PatientRecord) -> dict[str, Any]:
             ),
             "record_entries_linked": linked,
         },
+        "clinical": _clinical_counts(p.clinical),
+        "consolidation": consolidation,
     }
 
 
-def _document_entry(doc: ParsedDocument) -> dict[str, Any]:
-    entries = Counter(e.key for e in iter_entries(doc.root))
+def _document_entry(x: DocumentExtraction) -> dict[str, Any]:
+    doc = x.document
+    entries: Counter[str] = Counter()
+    by_outcome: dict[str, int] = defaultdict(int)
+    for (key, outcome), n in x.outcomes.items():
+        entries[key] += n
+        by_outcome[outcome.value] += n
     encounter = doc.header.encounter
     return {
         "line": doc.source.line,
@@ -117,8 +155,9 @@ def _document_entry(doc: ParsedDocument) -> dict[str, Any]:
             {" / ".join(s.label for s in path) for path, _ in iter_sections(doc.root)}
         ),
         "entries": dict(entries),
-        "mapped": 0,
-        "not_mapped": sum(entries.values()),
+        "outcomes": dict(by_outcome),
+        "items": dict(Counter(type(i).__name__ for i in x.items)),
+        "narrative_sections": len(x.narratives),
     }
 
 
@@ -151,10 +190,16 @@ def format_summary(report: dict[str, Any]) -> str:
             f"{enc['total']} encounters ({enc['with_service_event_document']} with a service "
             f"event document), {enc['record_entries_linked']} record entries linked"
         )
+        clinical = ", ".join(f"{k} {v}" for k, v in p["clinical"].items() if v)
+        lines.append(f"  Clinical data after consolidation: {clinical or 'none'}")
     total = sum(t["count"] for t in s["entry_types"].values())
-    lines.append(f"Entries: {total} in {len(s['entry_types'])} types (0 mapped so far)")
-    for key, t in list(s["entry_types"].items())[:10]:
-        lines.append(f"  {t['count']:5}  {key}  {t['display'] or ''}".rstrip())
+    outcomes = ", ".join(f"{k} {v}" for k, v in sorted(s["entries_by_outcome"].items()))
+    lines.append(f"Entries: {total} in {len(s['entry_types'])} types ({outcomes})")
+    unmapped = [
+        (k, t) for k, t in s["entry_types"].items() if t["status"] not in ("mapped", "context")
+    ]
+    for key, t in unmapped[:10]:
+        lines.append(f"  {t['status']:10} {t['count']:5}  {key}  {t['display'] or ''}".rstrip())
     issues = s["issues_by_severity"]
     lines.append("Issues: " + (", ".join(f"{k} {v}" for k, v in sorted(issues.items())) or "none"))
     return "\n".join(lines)

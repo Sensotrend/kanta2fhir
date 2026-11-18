@@ -104,6 +104,7 @@ Since only CDA payloads are expected (D9), there is no general format-plugin fra
 
 ### 2.3 Consolidation
 - **Kooste documents are a fallback only (D7).** Items are taken from the original records first. A Kooste item is used only when no original carries the same identifier or content key, and in that case it is flagged in the coverage report.
+- Kooste structure (found in milestone 2): each top-level section holds an `encounter` entry whose `reference/externalDocument/id` names the original document, and the item itself sits in a subsection. A Kooste item is dropped when that original document is in the export. In the test export all 179 Kooste items are dropped this way.
 - Deduplicate by Kanta unique ids: 2.14 diagnosis episode id, 13.9 risk id, 19.7 immunisation id, 23.6 measurement id, 103.30 lab test id, 103.21 lab order id, entry `id/@root`. Fall back to a content hash of (code, date, value).
 - Document versions: `setId` + `versionNumber` and `relatedDocument` RPLC mean only the latest version counts.
 
@@ -255,7 +256,7 @@ tests/  tests/fixtures/{real,synthetic}/
 ## 4. Milestones
 
 1. ✅ (done 2026-11-18) Project skeleton (uv, ruff, pytest), reader, CDA header parsing, canonical Patient/Encounter, and a coverage report over the whole file.
-2. Entry extractors (diagnosis, risk, immunisation, procedure, lab, vitals, imaging, care plan) + narrative conversion + consolidation/dedup (Kooste fallback, versions).
+2. ✅ (done 2026-11-18) Entry extractors (diagnosis, risk, immunisation, procedure, lab, vitals, imaging, care plan) + narrative conversion + consolidation/dedup (Kooste fallback, versions).
 3. Terminology layer: hand-made tables, ICD-10/ATC English, the LABfi→LOINC build script and table, UCUM normalisation, FI/EN displays.
 4. Shared FHIR factories + validator wrapper (`-tx n/a`) + IG fetch.
 5. **Lab Report** builder → validates with no errors (offline).

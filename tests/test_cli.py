@@ -23,7 +23,8 @@ def test_cli_writes_report(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -
     assert patient["encounters"]["record_entries_linked"] == 4
     diag = report["summary"]["entry_types"]["observation 1.2.246.537.6.12.999.2003#2"]
     assert diag["count"] == 3
-    assert diag["status"] == "not-mapped"
+    assert diag["status"] == "mapped"
+    assert report["patients"][0]["clinical"]["conditions"] == 3
 
     out = capsys.readouterr().out
     assert "Skipping eps: not implemented yet" in out
