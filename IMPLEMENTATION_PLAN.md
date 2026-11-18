@@ -254,7 +254,7 @@ tests/  tests/fixtures/{real,synthetic}/
 
 ## 4. Milestones
 
-1. Project skeleton (uv, ruff, pytest), reader, CDA header parsing, canonical Patient/Encounter, and a coverage report over the whole file.
+1. ✅ (done 2026-11-18) Project skeleton (uv, ruff, pytest), reader, CDA header parsing, canonical Patient/Encounter, and a coverage report over the whole file.
 2. Entry extractors (diagnosis, risk, immunisation, procedure, lab, vitals, imaging, care plan) + narrative conversion + consolidation/dedup (Kooste fallback, versions).
 3. Terminology layer: hand-made tables, ICD-10/ATC English, the LABfi→LOINC build script and table, UCUM normalisation, FI/EN displays.
 4. Shared FHIR factories + validator wrapper (`-tx n/a`) + IG fetch.

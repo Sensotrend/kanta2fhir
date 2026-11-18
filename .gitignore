@@ -12,3 +12,14 @@ vocab/
 
 # Downloaded tools (FHIR validator jar)
 .tools/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+dist/
+
+# Test fixtures are Kanta test-environment data (test-range identity code)
+!tests/fixtures/**/*.ndjson
