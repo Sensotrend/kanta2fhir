@@ -270,7 +270,13 @@ tests/  tests/fixtures/{real,synthetic}/
    - Encounter.class: Kanta encounter type 2 → AMB (seen in data); 1 → IMP is an assumption (no inpatient data).
    - The validator downloads the IG packages itself (`-ig package#version`); versions are pinned in `kanta2fhir/fhir/profiles.py`, and the jar version in `tools/fetch_validator.py`.
    - `tools/validate_shared.py` validates the shared resources of an export against the EU base profiles: the full test export gives 0 errors, and the only warnings are the expected "unknown Finnish code system" ones (128).
-5. **Lab Report** builder → validates with no errors (offline).
+5. ✅ (done 2026-11-18) **Lab Report** builder → validates with no errors (offline). Notes:
+   - The test export gives 2 lab reports (the full lab document with 10 results and its order, and the COVID-19 test). Both validate with 0 errors offline **and** against tx.fhir.org.
+   - Report and Composition share the source document's id as identifier and LOINC 11502-2 as type, and reference each other through the two extensions the profile requires. Every Observation has a performer (the entry's author, else the report author; the Kanta "performed by" name is added as a display-only performer).
+   - Each requested test becomes a ServiceRequest, and the tests of one order share the order id as `requisition`. The repeat period and count go into `occurrenceTiming`.
+   - A result with no value but a statement (protein electrophoresis) uses the statement as `valueString`. With no value at all, `dataAbsentReason` is `unknown`.
+   - Known warning: FinOMOP maps two Finnish tests (2522 protein electrophoresis, 1270 EKG) to LOINC *panel* codes, while the Finnish result is a single text. The validator (with terminology) warns that panel results belong in members/components. The LOINC coding is kept; this is a mapping-granularity limitation.
+   - `kanta2fhir … --validate [--tx URL]` now validates the generated documents; `--timestamp` makes output reproducible.
 6. **EPS** builder → validates with no errors (offline).
 7. Synthetic inpatient fixtures + **HDR** builder → validates with no errors (offline).
 8. Final validation **with a terminology server**, fixes, documentation of accepted warnings; CLI polish, golden tests, README.

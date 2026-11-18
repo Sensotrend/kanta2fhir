@@ -9,8 +9,9 @@ from kanta2fhir.fhir.datatypes import JSON
 XHTML_NS = "http://www.w3.org/1999/xhtml"
 
 
-def div(*fragments: str) -> str:
-    return f'<div xmlns="{XHTML_NS}">{"".join(fragments)}</div>'
+def div(*fragments: str, lang: str | None = None) -> str:
+    attrs = f' lang="{lang}" xml:lang="{lang}"' if lang else ""
+    return f'<div xmlns="{XHTML_NS}"{attrs}>{"".join(fragments)}</div>'
 
 
 def para(text: str | None) -> str:
@@ -25,9 +26,9 @@ def table(headers: list[str], rows: list[list[str | None]]) -> str:
     return f"<table><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
 
 
-def generated(*fragments: str) -> JSON:
-    """A Narrative element with status 'generated'."""
-    return {"status": "generated", "div": div(*fragments)}
+def generated(*fragments: str, lang: str | None = None) -> JSON:
+    """A Narrative element with status 'generated' (``lang`` when the resource has a language)."""
+    return {"status": "generated", "div": div(*fragments, lang=lang)}
 
 
 def empty_section(text: str) -> JSON:
