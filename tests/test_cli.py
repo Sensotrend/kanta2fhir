@@ -27,7 +27,8 @@ def test_cli_writes_report(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -
     assert report["patients"][0]["clinical"]["conditions"] == 3
 
     out = capsys.readouterr().out
-    assert "Skipping eps: not implemented yet" in out
+    assert "Skipping hdr: not implemented yet" in out
+    assert "eps: 1 document(s)" in out
 
 
 def test_report_contains_no_personal_data(

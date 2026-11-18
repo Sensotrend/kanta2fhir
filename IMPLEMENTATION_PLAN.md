@@ -277,7 +277,14 @@ tests/  tests/fixtures/{real,synthetic}/
    - A result with no value but a statement (protein electrophoresis) uses the statement as `valueString`. With no value at all, `dataAbsentReason` is `unknown`.
    - Known warning: FinOMOP maps two Finnish tests (2522 protein electrophoresis, 1270 EKG) to LOINC *panel* codes, while the Finnish result is a single text. The validator (with terminology) warns that panel results belong in members/components. The LOINC coding is kept; this is a mapping-granularity limitation.
    - `kanta2fhir … --validate [--tx URL]` now validates the generated documents; `--timestamp` makes output reproducible.
-6. **EPS** builder → validates with no errors (offline).
+6. ✅ (done 2026-11-18) **EPS** builder → validates with no errors (offline). Notes:
+   - The test export gives one Patient Summary that validates with 0 errors offline **and** against tx.fhir.org. Remaining warnings: unknown Finnish code systems, eHDSI value sets that tx.fhir.org does not serve, and the two LOINC panel mappings noted in milestone 5.
+   - Sections: Problems 3 (permanent diagnoses), Allergies 2, Medications (emptyReason; the care plan's free-text medication list is shown in the narrative), Immunizations 2, Results 22 (11 lab, 9 imaging, 2 PEF), Procedures 127, Medical devices (emptyReason), Past problems 1 (11348-0, D12), Plan of care 1, Vital signs 2.
+   - The section order is hard-coded in `kanta2fhir/fhir/eps.py` (not read from the profile at run time); a test compares it with the EPS package when that package is in the local FHIR cache. Section codes use the LOINC displays served by tx.fhir.org, which differ from some displays in the IPS documentation ("note" instead of "Narrative").
+   - Rules, all in one place in `eps.py`: active problem = permanence PYS; allergy = a risk with an agent or of a drug-reaction type (Kanta risk type L*), other risks become alerts (Flag); verification "confirmed" when the certainty is TOD, else provisional/unconfirmed; severity 1 (critical risk) → criticality high.
+   - Vital signs: only LOINC codes accepted by the core vital-signs profile go to the Vital signs section; others (PEF) go to Results with category "exam". Measured body weight (3141-9) also gets the generic code 29463-7 that the core body-weight profile requires.
+   - The Composition's author is the converter (a Device): the summary is generated, not written by a clinician. Encounters are not included in the summary.
+   - The care plan becomes a CarePlan with a Goal (with the target values), a CareTeam and one activity per planned service; the remaining free-text parts become notes.
 7. Synthetic inpatient fixtures + **HDR** builder → validates with no errors (offline).
 8. Final validation **with a terminology server**, fixes, documentation of accepted warnings; CLI polish, golden tests, README.
 

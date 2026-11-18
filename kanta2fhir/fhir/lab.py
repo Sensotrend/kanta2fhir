@@ -133,7 +133,7 @@ class LabReportBuilder:
 
         requests = self._service_requests(rs, group.orders, subject, encounter)
         results = [
-            self._observation(rs, r, subject, encounter, author, requests) for r in group.results
+            self.observation(rs, r, subject, encounter, author, requests) for r in group.results
         ]
         specimens = sorted(
             {s["reference"] for o in results for s in [o.get("specimen")] if s},
@@ -152,7 +152,7 @@ class LabReportBuilder:
                 {
                     "resourceType": "DiagnosticReport",
                     "id": report_id,
-                    "text": self._section_text(group.results),
+                    "text": self.section_text(group.results),
                     "extension": [
                         {
                             "url": DR_COMPOSITION_EXT,
@@ -201,7 +201,7 @@ class LabReportBuilder:
                     {
                         "title": "Laboratoriotutkimukset",
                         "code": STUDY_TYPE,
-                        "text": self._section_text(group.results),
+                        "text": self.section_text(group.results),
                         "entry": [{"reference": f"urn:uuid:{o['id']}"} for o in results],
                     }
                 ],
@@ -294,7 +294,7 @@ class LabReportBuilder:
             )
         )
 
-    def _observation(
+    def observation(
         self,
         rs: ResourceSet,
         r: LabResult,
@@ -302,7 +302,9 @@ class LabReportBuilder:
         encounter: JSON | None,
         report_author: JSON | None,
         requests: dict[str, list[JSON]],
+        profile: str = PROFILES["Observation"],
     ) -> JSON:
+        """A lab result Observation (also used by the Patient Summary with another profile)."""
         code = codeable_concept(r.code, self.t)
         if code is not None:
             for local in r.local_codes:
@@ -316,7 +318,7 @@ class LabReportBuilder:
         obs: JSON = {
             "resourceType": "Observation",
             "id": resource_id("Observation", "lab", *_result_key(r)),
-            "meta": {"profile": [PROFILES["Observation"]]},
+            "meta": {"profile": [profile]},
             "text": n.generated(n.para(_result_text(r))),
             "identifier": [i] if (i := identifier(r.test_id)) else [],
             "basedOn": based_on,
@@ -387,23 +389,28 @@ class LabReportBuilder:
             return "amended"
         return "final" if "final" in statuses else "unknown"
 
-    def _section_text(self, results: list[LabResult]) -> JSON:
-        rows = []
-        for r in results:
-            rr = r.reference_ranges[0] if r.reference_ranges else None
-            ref = None
-            if rr:
-                ref = " - ".join(x for x in (_q(rr.low), _q(rr.high)) if x) or rr.text
-            rows.append(
-                [
-                    r.code.display or r.code.code,
-                    _value_text(r),
-                    ref,
-                    r.interpretation.display if r.interpretation else None,
-                    r.effective,
-                ]
-            )
-        return n.generated(n.table(["Tutkimus", "Tulos", "Viitearvot", "Tulkinta", "Aika"], rows))
+    def section_text(self, results: list[LabResult]) -> JSON:
+        return n.generated(results_table(results))
+
+
+def results_table(results: list[LabResult]) -> str:
+    """An XHTML table of lab results (shared with the Patient Summary)."""
+    rows = []
+    for r in results:
+        rr = r.reference_ranges[0] if r.reference_ranges else None
+        ref = None
+        if rr:
+            ref = " - ".join(x for x in (_q(rr.low), _q(rr.high)) if x) or rr.text
+        rows.append(
+            [
+                r.code.display or r.code.code,
+                _value_text(r),
+                ref,
+                r.interpretation.display if r.interpretation else None,
+                r.effective,
+            ]
+        )
+    return n.table(["Tutkimus", "Tulos", "Viitearvot", "Tulkinta", "Aika"], rows)
 
 
 def _q(q: Quantity | None) -> str | None:
