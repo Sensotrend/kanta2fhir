@@ -1,6 +1,6 @@
 # Kanta CDA → EU FHIR documents: implementation plan
 
-Status: **milestones 1-7 implemented** (2026-11-18). Nothing is implemented yet. §6 has the decision log, and §7 has the remaining open points.
+Status: **milestones 1-7 implemented** (2026-11-18); milestone 8 (final validation with a terminology server, polish) remains. §6 has the decision log, and §7 has the remaining open points.
 
 Goal: read a Kanta export (`*.ndjson` of FHIR `DocumentReference`s with embedded documents) and produce three kinds of document, each as a separate FHIR `Bundle` (type `document`) JSON file:
 
