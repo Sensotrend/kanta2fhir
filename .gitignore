@@ -1,0 +1,5 @@
+# Health data exports (contain personal identifiers and health information)
+*.ndjson
+
+# OS / editor
+.DS_Store
