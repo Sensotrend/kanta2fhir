@@ -262,7 +262,14 @@ tests/  tests/fixtures/{real,synthetic}/
    - `tools/fetch_titles.py` fetches WHO ICD-10, ATC and LOINC titles for the codes an export uses into the git-ignored `vocab/tx_titles.csv`. Conversion itself never calls the network; without the cache the international codings simply have no display.
    - WHO ICD-10 codes are recognised as WHO-shaped codes that are *not* in ICD10fi (D15).
    - The hand-made tables (route, site, target disease, interpretation, result status, gender, units) cover only the codes seen in the data so far, because the THL code server's concept API could not be used. Unknown codes keep their Finnish coding only. `tools/verify_terminology.py` checks every target code against tx.fhir.org; all checks passed on 2026-11-18.
-4. Shared FHIR factories + validator wrapper (`-tx n/a`) + IG fetch.
+4. ✅ (done 2026-11-18) Shared FHIR factories + validator wrapper (`-tx n/a`) + IG fetch. Notes:
+   - Resources are plain dicts in FHIR JSON form, not `fhir.resources` models (this settles the §3 question): the HL7 validator is the authority, and dicts keep the code simple to read.
+   - Resource ids are UUIDv5 from Kanta identifiers (the patient's from the pseudonym, never the HETU), so reruns give identical output.
+   - Decimals are written as JSON numbers, so trailing zeros (`5.20`) are not kept.
+   - Practitioners have masked identity codes in Kanta, so a practitioner's identity is name + organisation.
+   - Encounter.class: Kanta encounter type 2 → AMB (seen in data); 1 → IMP is an assumption (no inpatient data).
+   - The validator downloads the IG packages itself (`-ig package#version`); versions are pinned in `kanta2fhir/fhir/profiles.py`, and the jar version in `tools/fetch_validator.py`.
+   - `tools/validate_shared.py` validates the shared resources of an export against the EU base profiles: the full test export gives 0 errors, and the only warnings are the expected "unknown Finnish code system" ones (128).
 5. **Lab Report** builder → validates with no errors (offline).
 6. **EPS** builder → validates with no errors (offline).
 7. Synthetic inpatient fixtures + **HDR** builder → validates with no errors (offline).

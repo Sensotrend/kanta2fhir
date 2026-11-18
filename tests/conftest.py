@@ -58,3 +58,24 @@ def careplan_result() -> PipelineResult:
 @pytest.fixture(scope="session")
 def results_result() -> PipelineResult:
     return run(RESULTS)
+
+
+def pytest_addoption(parser: pytest.Parser) -> None:
+    parser.addoption(
+        "--run-validator",
+        action="store_true",
+        help="also run tests that call the HL7 FHIR Validator (slow; needs Java and packages)",
+    )
+
+
+def pytest_configure(config: pytest.Config) -> None:
+    config.addinivalue_line("markers", "validator: runs the HL7 FHIR Validator (slow)")
+
+
+def pytest_collection_modifyitems(config: pytest.Config, items: list[pytest.Item]) -> None:
+    if config.getoption("--run-validator"):
+        return
+    skip = pytest.mark.skip(reason="needs --run-validator")
+    for item in items:
+        if "validator" in item.keywords:
+            item.add_marker(skip)

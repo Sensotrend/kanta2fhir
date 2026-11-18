@@ -8,7 +8,7 @@ Converts Kanta health record exports (`*.ndjson` files of FHIR `DocumentReferenc
 
 The design, decisions and milestones are in [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md).
 
-**Status:** milestones 1-3 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication, a coverage report, and the terminology layer (LOINC for Finnish lab codes, WHO ICD-10/ATC/SNOMED CT equivalents, English names, UCUM units). No FHIR documents are produced yet.
+**Status:** milestones 1-4 are done: reading, CDA parsing, patient/encounter assembly, extraction of all clinical entries (diagnoses, risks, immunisations, procedures, lab and imaging orders and results, vital signs, care plan, narratives), de-duplication, a coverage report, and the terminology layer (LOINC for Finnish lab codes, WHO ICD-10/ATC/SNOMED CT equivalents, English names, UCUM units), and shared FHIR resource factories with a validator wrapper. No FHIR documents are produced yet.
 
 ## Setup
 
@@ -54,6 +54,14 @@ See [NOTICE](NOTICE) for attributions (FinOMOP, LOINC).
 uv run pytest
 uv run ruff check .
 uv run ruff format .
+```
+
+Validation needs Java 17+ and the HL7 FHIR Validator:
+
+```bash
+uv run python tools/fetch_validator.py
+uv run pytest --run-validator          # includes the (slow) validator tests
+uv run python tools/validate_shared.py path/to/export.ndjson
 ```
 
 Test fixtures in `tests/fixtures/real/` are documents from Kanta's test environment, about a test patient whose identity code is in the test range. Real exports (`*.ndjson` in the repository root) and generated output (`out/`) are git-ignored.
