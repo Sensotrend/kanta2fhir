@@ -25,3 +25,17 @@ def test_documents_match_golden(name: str) -> None:
     assert sorted(actual) == sorted(expected)
     for rel, bundle in actual.items():
         assert bundle == expected[rel], f"{rel} differs from golden file"
+
+
+@pytest.mark.parametrize("name", list(INPUTS))
+def test_provenance_targets_derived_resources(name: str) -> None:
+    """Provenance must not point at the Composition (the IG Publisher renders no anchor for
+    a document's first entry, so such a reference becomes a broken link)."""
+    for rel, bundle in build(name).items():
+        by_url = {e["fullUrl"]: e["resource"] for e in bundle["entry"]}
+        provenances = [r for r in by_url.values() if r["resourceType"] == "Provenance"]
+        assert provenances, rel
+        for prov in provenances:
+            types = {by_url[t["reference"]]["resourceType"] for t in prov["target"]}
+            assert "Composition" not in types, rel
+            assert types, rel

@@ -209,9 +209,7 @@ class LabReportBuilder:
         )
 
         sources = {group.key} | {r.source.document_id for r in group.results}
-        rs.provenance(
-            [{"reference": f"urn:uuid:{composition_id}"}, report], sources, self.generated_at
-        )
+        rs.provenance(rs.derived_resources(), sources, self.generated_at)
         return document_bundle(
             f"lab|{group.key}", self.generated_at, composition, rs.entries(), PROFILES["Bundle"]
         )

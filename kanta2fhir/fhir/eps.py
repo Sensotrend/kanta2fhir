@@ -236,7 +236,7 @@ class PatientSummaryBuilder:
             "section": sections,
         }
         sources = [d.id for d in patient.record.current_documents()]
-        rs.provenance([{"reference": full_url(composition_id)}], sources, self.generated_at)
+        rs.provenance(rs.derived_resources(), sources, self.generated_at)
         return document_bundle(
             f"eps|{pseudonym}", self.generated_at, composition, rs.entries(), PROFILES["Bundle"]
         )

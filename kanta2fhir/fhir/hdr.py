@@ -201,7 +201,7 @@ class DischargeReportBuilder:
                 "section": sections,
             }
         )
-        rs.provenance([{"reference": full_url(composition_id)}], docs, self.generated_at)
+        rs.provenance(rs.derived_resources(), docs, self.generated_at)
         bundle = document_bundle(
             f"hdr|{key}", self.generated_at, composition, rs.entries(), PROFILES["Bundle"]
         )

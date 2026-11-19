@@ -472,17 +472,32 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:8fc1cae8-0b90-5c4e-8271-b8775ad580ae",
+      "fullUrl": "urn:uuid:b94d0442-7f3d-5322-9aaa-4183bbd08aa6",
       "resource": {
         "resourceType": "Provenance",
-        "id": "8fc1cae8-0b90-5c4e-8271-b8775ad580ae",
+        "id": "b94d0442-7f3d-5322-9aaa-4183bbd08aa6",
         "text": {
           "status": "generated",
           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Converted by kanta2fhir 0.1.0 from 1 Kanta document(s)</p></div>"
         },
         "target": [
           {
-            "reference": "urn:uuid:434f57bc-84c1-5508-bb11-5aaf143c84a7"
+            "reference": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08"
+          },
+          {
+            "reference": "urn:uuid:56deee7a-2384-5758-80a0-5dd96539e530"
+          },
+          {
+            "reference": "urn:uuid:af3eb24d-a268-58f4-ab35-05bf8924efd0"
+          },
+          {
+            "reference": "urn:uuid:7f10a398-73a9-5949-b66d-b31c8921f887"
+          },
+          {
+            "reference": "urn:uuid:f4b88163-7db9-533e-a8f4-e974289acbbb"
+          },
+          {
+            "reference": "urn:uuid:b199de98-15a3-5ee3-86f5-0ada71901227"
           },
           {
             "reference": "urn:uuid:a96c99ef-21e3-5697-af6f-d9cba7da9ede"

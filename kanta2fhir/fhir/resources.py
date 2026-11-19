@@ -185,6 +185,20 @@ class ResourceSet:
             }
         )
 
+    def derived_resources(self) -> list[JSON]:
+        """References to everything in the set that was converted from Kanta documents (not the
+        converter Device, not Provenance). Used as Provenance.target.
+
+        The Composition is deliberately not a target: the IG Publisher renders no anchor for a
+        document bundle's first entry, so a Provenance → Composition reference becomes a broken
+        link in the published pages, and the derived resources say more anyway.
+        """
+        return [
+            {"reference": url}
+            for url, r in self.resources.items()
+            if r["resourceType"] not in ("Device", "Provenance")
+        ]
+
     def provenance(
         self, targets: Iterable[JSON], source_documents: Iterable[str], recorded: str
     ) -> JSON:

@@ -670,17 +670,44 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:60457a32-57a5-5886-a12b-2a644bd518f7",
+      "fullUrl": "urn:uuid:88ba202a-9d32-5b8a-a0d8-efbfe1b400fb",
       "resource": {
         "resourceType": "Provenance",
-        "id": "60457a32-57a5-5886-a12b-2a644bd518f7",
+        "id": "88ba202a-9d32-5b8a-a0d8-efbfe1b400fb",
         "text": {
           "status": "generated",
           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p>Converted by kanta2fhir 0.1.0 from 1 Kanta document(s)</p></div>"
         },
         "target": [
           {
-            "reference": "urn:uuid:0c65a776-13f3-5aa8-9969-503036d4c8c5"
+            "reference": "urn:uuid:2ed038d4-36cd-5a7a-9594-e90661ea6d08"
+          },
+          {
+            "reference": "urn:uuid:63c8cc2d-7639-505f-a142-320375d5e3ef"
+          },
+          {
+            "reference": "urn:uuid:095d7122-c3c7-5b96-9509-b81890790dbc"
+          },
+          {
+            "reference": "urn:uuid:55393265-3642-508b-9150-23531b7d2632"
+          },
+          {
+            "reference": "urn:uuid:2aa96ad2-9e06-5c6b-931e-8717e9c72f78"
+          },
+          {
+            "reference": "urn:uuid:cb9070cb-cd3a-506e-8bcb-60253266878c"
+          },
+          {
+            "reference": "urn:uuid:19e2aa75-7ad2-5421-94b0-b5158b899409"
+          },
+          {
+            "reference": "urn:uuid:0bf57bf6-ac02-5dee-8bed-b2224e032380"
+          },
+          {
+            "reference": "urn:uuid:055d8c63-abd4-53ea-adfe-42b5d9357600"
+          },
+          {
+            "reference": "urn:uuid:8e8d43a8-8da7-5a62-b21a-17970e34aa14"
           }
         ],
         "recorded": "2026-01-01T12:00:00+02:00",
