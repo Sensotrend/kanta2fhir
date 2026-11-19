@@ -98,6 +98,13 @@ class Terminology:
         }
 
     @cached_property
+    def _icd10(self) -> dict[tuple[str, str], dict[str, str]]:
+        """WHO ICD-10 equivalents for Finnish codes other than ICD-10 FI (e.g. target diseases)."""
+        return {
+            (r["source_system"], r["source_code"]): r for r in _read("icd10.csv", self.data_dir)
+        }
+
+    @cached_property
     def _interpretation(self) -> dict[str, dict[str, str]]:
         return {r["source_code"]: r for r in _read("interpretation.csv", self.data_dir)}
 
@@ -174,6 +181,8 @@ class Terminology:
             out.append(FhirCoding(uri, c.code, self.title(uri, c.code)))
         if c.system and (row := self._snomed.get((c.system, c.code))):
             out.append(FhirCoding(SNOMED, row["snomed_code"], row["snomed_display"]))
+        if c.system and (row := self._icd10.get((c.system, c.code))):
+            out.append(FhirCoding(ICD10_WHO, row["icd10_code"], row["icd10_display"] or None))
         return out
 
     def loinc_for_lab(self, code: str) -> FhirCoding | None:

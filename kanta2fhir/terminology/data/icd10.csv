@@ -1,0 +1,35 @@
+source_system,source_code,source_display,icd10_code,icd10_display,note
+1.2.246.537.6.609.201501,1,Kolera,A00,Cholera,THL - Rokotussuoja
+1.2.246.537.6.609.201501,2,Kurkkumätä,A36,Diphtheria,THL - Rokotussuoja
+1.2.246.537.6.609.201501,3,Haemophilus influenzae b -infektio,A49.2,"Haemophilus influenzae infection, unspecified site",THL - Rokotussuoja
+1.2.246.537.6.609.201501,4,Meningokokin aiheuttama infektio,A39,Meningococcal infection,THL - Rokotussuoja
+1.2.246.537.6.609.201501,5,Hinkuyskä,A37,Whooping cough,THL - Rokotussuoja
+1.2.246.537.6.609.201501,6,Streptococcus pneumoniae -infektio,B95.3,Streptococcus pneumoniae as the cause of diseases classified to other chapters,THL - Rokotussuoja
+1.2.246.537.6.609.201501,7,Jäykkäkouristus,A35,Other tetanus,THL - Rokotussuoja
+1.2.246.537.6.609.201501,8,Tuberkuloosi,A15-A19,Tuberculosis,THL - Rokotussuoja (ICD-10 block)
+1.2.246.537.6.609.201501,9,Lavantauti,A01.0,Typhoid fever,THL - Rokotussuoja
+1.2.246.537.6.609.201501,10,Puutiaisaivotulehdus,A84,Tick-borne viral encephalitis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,11,Japanin aivotulehdus,A83.0,Japanese encephalitis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,12,Influenssa,J11,"Influenza, virus not identified",THL - Rokotussuoja
+1.2.246.537.6.609.201501,13,Hepatiitti A -viruksen aiheuttama maksatulehdus,B15,Acute hepatitis A,THL - Rokotussuoja
+1.2.246.537.6.609.201501,14,Hepatiitti B -viruksen aiheuttama maksatulehdus,B16,Acute hepatitis B,THL - Rokotussuoja
+1.2.246.537.6.609.201501,15,Tuhkarokko,B05,Measles,THL - Rokotussuoja
+1.2.246.537.6.609.201501,16,Sikotauti,B26,Mumps,THL - Rokotussuoja
+1.2.246.537.6.609.201501,17,Polio,A80,Acute poliomyelitis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,18,Vesikauhu,A82,Rabies,THL - Rokotussuoja
+1.2.246.537.6.609.201501,19,Rotaviruksen aiheuttama suolistoinfektio,A08.0,Rotaviral enteritis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,20,Vihurirokko,B06,Rubella [German measles],THL - Rokotussuoja
+1.2.246.537.6.609.201501,21,Vesirokko,B01,Varicella [chickenpox],THL - Rokotussuoja
+1.2.246.537.6.609.201501,22,Keltakuume,A95,Yellow fever,THL - Rokotussuoja
+1.2.246.537.6.609.201501,23,Ihmisen papilloomaviruksen aiheuttama infektio,B97.7,Papillomavirus as the cause of diseases classified to other chapters,THL - Rokotussuoja
+1.2.246.537.6.609.201501,24,Pernarutto,A22,Anthrax,THL - Rokotussuoja
+1.2.246.537.6.609.201501,25,Bruselloosi,A23,Brucellosis,THL - Rokotussuoja
+1.2.246.537.6.609.201501,26,Rutto,A20,Plague,THL - Rokotussuoja
+1.2.246.537.6.609.201501,27,Pilkkukuume,A75.0,Epidemic louse-borne typhus fever due to Rickettsia prowazekii,THL - Rokotussuoja
+1.2.246.537.6.609.201501,28,Isorokko,B03,,THL - Rokotussuoja (no display: tx.fhir.org's display for B03 is malformed)
+1.2.246.537.6.609.201501,29,COVID-19-tauti,U07.1,"COVID-19, virus identified",THL - Rokotussuoja
+1.2.246.537.6.609.201501,30,Vyöruusu,B02,Zoster [herpes zoster],THL - Rokotussuoja
+1.2.246.537.6.609.201501,31,M-rokko,B04,Monkeypox,THL - Rokotussuoja
+1.2.246.537.6.609.201501,32,Denguekuume,A97,Dengue,THL - Rokotussuoja
+1.2.246.537.6.609.201501,33,RS-viruksen aiheuttama alahengitystieinfektio,B97.4,Respiratory syncytial virus as the cause of diseases classified to other chapters,THL - Rokotussuoja
+1.2.246.537.6.609.201501,35,Chikungunya,A92.0,Chikungunya virus disease,THL - Rokotussuoja

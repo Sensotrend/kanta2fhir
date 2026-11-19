@@ -752,6 +752,11 @@
                     "system": "http://snomed.info/sct",
                     "code": "397430003",
                     "display": "Diphtheria caused by Corynebacterium diphtheriae"
+                  },
+                  {
+                    "system": "http://hl7.org/fhir/sid/icd-10",
+                    "code": "A36",
+                    "display": "Diphtheria"
                   }
                 ],
                 "text": "Kurkkumätä"
@@ -767,6 +772,11 @@
                     "system": "http://snomed.info/sct",
                     "code": "76902006",
                     "display": "Tetanus"
+                  },
+                  {
+                    "system": "http://hl7.org/fhir/sid/icd-10",
+                    "code": "A35",
+                    "display": "Other tetanus"
                   }
                 ],
                 "text": "Jäykkäkouristus"

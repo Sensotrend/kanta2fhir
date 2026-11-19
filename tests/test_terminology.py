@@ -138,8 +138,8 @@ def test_code_lists_from_code_server(terminology: Terminology) -> None:
     assert (op.code, op.display) == ("723980000", "Structure of right buttock")
     assert (vp.code, vp.display) == ("723979003", "Structure of left buttock")
     # Rokotussuoja 29 COVID-19; 99 "other" has no mapping
-    [covid] = terminology.equivalents(Coding("29", "1.2.246.537.6.609.201501"))
-    assert covid.code == "840539006"
+    covid = terminology.equivalents(Coding("29", "1.2.246.537.6.609.201501"))
+    assert [(c.system, c.code) for c in covid] == [(SNOMED, "840539006"), (ICD10_WHO, "U07.1")]
     assert terminology.equivalents(Coding("99", "1.2.246.537.6.609.201501")) == []
     neg = terminology.interpretation(Coding("NEG", "1.2.246.537.5.78.1997"))
     assert neg is not None and neg.code == "NEG"

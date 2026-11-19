@@ -7,7 +7,7 @@ on 2026-11-18. Every target code was checked against tx.fhir.org (tools/verify_t
 |---|---|---|
 | snomed.csv | AR/YDIN - Rokotustapa (1.2.246.537.6.111.2007) | ID, IM, IN, PO, SC mapped; MUU (other) not mapped |
 | snomed.csv | AR/YDIN - Pistoskohta (1.2.246.537.6.110.2007) | all 6 sides/sites mapped; MUU not mapped |
-| snomed.csv | THL - Rokotussuoja (1.2.246.537.6.609.201501) | 34 of 38 mapped; 34 Lintuinfluenssa (deprecated) and 91/92/99 (other bacterium/virus/vaccine) not mapped |
+| snomed.csv, icd10.csv | THL - Rokotussuoja (1.2.246.537.6.609.201501) | 34 of 38 mapped to both SNOMED CT and WHO ICD-10; 34 Lintuinfluenssa (deprecated) and 91/92/99 (other bacterium/virus/vaccine) not mapped. The ICD-10 coding matters for the EU target-disease binding (eHDSIIllnessandDisorder, ICD-10 based): without it the IG Publisher reports thousands of errors from that value set |
 | interpretation.csv | AR/LABRA - Poikkeustilanneviestit (1.2.246.537.5.78.1997) | 33 of 35 identical to HL7 v3 ObservationInterpretation; MIK (header line) and TYHJÄ (no limits defined) not mapped |
 | result_status.csv | AR/LABRA - Tutkimusvastauksien tulkintakoodit (1.2.246.537.5.85.1997) | all 10 |
 | gender.csv | AR/YDIN - Sukupuoli (1.2.246.537.5.1.1997) | all 5 |

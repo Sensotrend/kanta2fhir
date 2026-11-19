@@ -94,8 +94,18 @@ def test_immunization(sample_eps: dict) -> None:
     ]
     protocol = imm["protocolApplied"][0]
     assert protocol["doseNumberPositiveInt"] == 1
-    targets = [c["coding"][-1]["code"] for c in protocol["targetDisease"]]
-    assert targets == ["397430003", "76902006"]  # SNOMED CT: diphtheria, tetanus
+
+    def codes(system: str) -> list[str]:
+        return [
+            c["code"]
+            for td in protocol["targetDisease"]
+            for c in td["coding"]
+            if c["system"] == system
+        ]
+
+    assert codes("http://snomed.info/sct") == ["397430003", "76902006"]  # diphtheria, tetanus
+    # WHO ICD-10 as well: the EU target-disease value set is ICD-10 based
+    assert codes("http://hl7.org/fhir/sid/icd-10") == ["A36", "A35"]
     assert imm["performer"][0]["function"]["coding"][0]["code"] == "AP"
     assert imm["lotNumber"] == "12345"
 

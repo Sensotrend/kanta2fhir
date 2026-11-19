@@ -23,6 +23,7 @@ from kanta2fhir.pipeline import run
 from kanta2fhir.terminology import Terminology
 from kanta2fhir.terminology.lookup import (
     DATA,
+    ICD10_WHO,
     LOINC,
     SNOMED,
     UCUM,
@@ -65,6 +66,11 @@ def main() -> None:
     for row in _read("snomed.csv", DATA):
         r = client.validate(SNOMED, row["snomed_code"], row["snomed_display"])
         report(r.valid, f"{row['snomed_code']} {row['snomed_display']}", r.message or "")
+
+    print("WHO ICD-10 targets (icd10.csv)")
+    for row in _read("icd10.csv", DATA):
+        r = client.validate(ICD10_WHO, row["icd10_code"], row["icd10_display"] or None)
+        report(r.valid, f"{row['icd10_code']} {row['icd10_display']}", r.message or "")
 
     print("Interpretation targets (interpretation.csv)")
     for row in _read("interpretation.csv", DATA):
