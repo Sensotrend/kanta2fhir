@@ -138,3 +138,23 @@ def test_lab_documents_validate(tmp_path: Path) -> None:
         pytest.skip("FHIR validator not available")
     code = main([str(RESULTS), "--out", str(tmp_path), "--targets", "lab", "--validate"])
     assert code == 0
+
+
+def test_loinc_panel_codes_only_on_orders(lab_bundle: dict) -> None:
+    """2522 and 1270 map to LOINC panels: kept on the order, left out of the single result."""
+    assert T.is_loinc_panel("2522") and T.is_loinc_panel("1270")
+    assert not T.is_loinc_panel("4600")
+
+    def loinc(resource: dict) -> list[str]:
+        return [c["code"] for c in resource["code"]["coding"] if c["system"] == "http://loinc.org"]
+
+    observations = {o["code"]["coding"][0]["code"]: o for o in resources(lab_bundle, "Observation")}
+    assert loinc(observations["2522"]) == []
+    assert loinc(observations["1270"]) == []
+    assert loinc(observations["4600"]) == ["14682-9"]
+    ekg_order = next(
+        sr
+        for sr in resources(lab_bundle, "ServiceRequest")
+        if sr["code"]["coding"][0]["code"] == "1270"
+    )
+    assert loinc(ekg_order) == ["34534-8"]

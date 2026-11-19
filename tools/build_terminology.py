@@ -59,13 +59,36 @@ def athena_versions(athena: Path) -> dict[str, str]:
     return {"omop": rows.get("None", ""), "loinc": rows.get("LOINC", "")}
 
 
+def read_panels(athena: Path, wanted: set[str]) -> set[str]:
+    """The wanted concepts that are LOINC panels (they have "Panel contains" relationships)."""
+    csv.field_size_limit(sys.maxsize)
+    panels = set()
+    with (athena / "CONCEPT_RELATIONSHIP.csv").open(encoding="utf-8", newline="") as f:
+        for row in csv.DictReader(f, delimiter="\t", quoting=csv.QUOTE_NONE):
+            if (
+                row["relationship_id"] == "Panel contains"
+                and row["concept_id_1"] in wanted
+                and not row["invalid_reason"]
+            ):
+                panels.add(row["concept_id_1"])
+    return panels
+
+
 def build_labfi(athena: Path) -> dict[str, int]:
     rows = fetch_finomop(LABFI_PATH)
     wanted = {r["conceptId"] for r in rows if r["mappingStatus"] == "APPROVED"}
     concepts = read_loinc_concepts(athena, wanted)
+    panels = read_panels(athena, wanted)
 
     by_code: dict[str, dict[str, str]] = {}
-    stats = {"rows": len(rows), "codes": 0, "approved": 0, "loinc": 0, "loinc_invalid": 0}
+    stats = {
+        "rows": len(rows),
+        "codes": 0,
+        "approved": 0,
+        "loinc": 0,
+        "loinc_panels": 0,
+        "loinc_invalid": 0,
+    }
     for r in rows:
         code = r["sourceCode"].strip()
         entry = by_code.setdefault(
@@ -79,6 +102,7 @@ def build_labfi(athena: Path) -> dict[str, int]:
                 "omop_concept_id": "",
                 "loinc_code": "",
                 "loinc_display": "",
+                "loinc_is_panel": "",
             },
         )
         if r["mappingStatus"] != "APPROVED" or entry["loinc_code"]:
@@ -94,10 +118,12 @@ def build_labfi(athena: Path) -> dict[str, int]:
         entry["omop_concept_id"] = r["conceptId"]
         entry["loinc_code"] = concept["concept_code"]
         entry["loinc_display"] = concept["concept_name"]
+        entry["loinc_is_panel"] = "1" if r["conceptId"] in panels else ""
 
     stats["codes"] = len(by_code)
     stats["approved"] = sum(1 for e in by_code.values() if e["mapping_status"] == "APPROVED")
     stats["loinc"] = sum(1 for e in by_code.values() if e["loinc_code"])
+    stats["loinc_panels"] = sum(1 for e in by_code.values() if e["loinc_is_panel"])
     _write(OUT / "labfi.csv", list(by_code.values()))
     return stats
 

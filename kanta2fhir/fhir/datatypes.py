@@ -57,14 +57,16 @@ def coding(fc: FhirCoding) -> JSON:
 
 
 def codeable_concept(
-    c: Coding | None, terminology: Terminology, text: str | None = None
+    c: Coding | None,
+    terminology: Terminology,
+    text: str | None = None,
+    allow_panels: bool = True,
 ) -> JSON | None:
     """All codings for a Kanta coding (original first), plus optional text."""
     if c is None:
         return {"text": text} if text else None
-    return compact(
-        {"coding": [coding(fc) for fc in terminology.codings(c)], "text": text or c.display}
-    )
+    codings = terminology.codings(c, allow_panels=allow_panels)
+    return compact({"coding": [coding(fc) for fc in codings], "text": text or c.display})
 
 
 def codeable_concepts(codes: list[Coding], terminology: Terminology) -> list[JSON]:

@@ -36,7 +36,6 @@ Only code system URIs, codes and displays are sent to the terminology server. Wi
 |---|---|---|
 | Finnish code system unknown | 459 | Kanta code systems (urn:oid:1.2.246…) are not published as FHIR CodeSystems; the original Finnish codes are kept by design and international codes are added next to them. |
 | eHDSI value set not available | 18 | The EU (eHDSI) value sets that EPS/HDR bind to are not served by tx.fhir.org; the bindings are preferred, not required. |
-| LOINC panel used for a single result | 4 | FinOMOP maps two Finnish tests (2522 protein electrophoresis, 1270 EKG) to LOINC panel codes while the Finnish result is one text value; a mapping-granularity limitation. |
 | Ambiguous profile choice (validator note) | 4 | The validator cannot pick between a base profile and a derived one for a reference; the resource conforms to both. |
 
 The real export has no inpatient stays, so it produces no discharge report.
@@ -45,7 +44,7 @@ The real export has no inpatient stays, so it produces no discharge report.
 
 - **Finnish code system unknown.** Kanta's code systems are identified by OIDs and are not available as FHIR CodeSystems on tx.fhir.org, so their codes cannot be checked there. By design (plan §2.4), the Finnish coding is always kept. A LOINC, WHO ICD-10, ATC or SNOMED CT coding is added where a mapping exists, and those international codings *are* checked and pass.
 - **eHDSI value set not available.** The EPS and HDR profiles bind conditions, allergies, vaccines and target diseases to EU eHDSI value sets (preferred bindings). tx.fhir.org does not serve them. Checking against them would need the eHDSI terminology server (MTC/CTS).
-- **LOINC panel used for a single result.** This is a property of the FinOMOP mapping (plan §2.5): Kuntaliitto codes 2522 (protein electrophoresis) and 1270 (12-lead EKG) are mapped to LOINC panel codes, while the Kanta result is one text statement. The LOINC coding is kept, because it identifies the test. A future option is to leave out LOINC panel codes when the result has a direct value.
+- **LOINC panel used for a single result** (fixed 2026-11-19). FinOMOP maps 48 Kuntaliitto codes to LOINC panel codes, among them 2522 (protein electrophoresis) and 1270 (12-lead EKG); the Kanta result is one value. The build script now flags panels: Athena records them as concepts with "Panel contains" relationships. A result Observation leaves out a LOINC panel code, while a ServiceRequest keeps it, since ordering a panel is what panel codes are for. The category has been removed from `tools/validation_summary.py`, so a recurrence shows up as unreviewed.
 - **Ambiguous profile choice.** A validator note about references (Composition ↔ DiagnosticReport, vital-sign Observations): the referenced resource matches both the base and a derived profile.
 
 ## IG Publisher check (2026-11-19)

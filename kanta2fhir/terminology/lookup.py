@@ -156,8 +156,12 @@ class Terminology:
             return self.title(uri, c.code)
         return None
 
-    def codings(self, c: Coding) -> list[FhirCoding]:
-        """The original coding, followed by any international equivalents."""
+    def codings(self, c: Coding, allow_panels: bool = True) -> list[FhirCoding]:
+        """The original coding, followed by any international equivalents.
+
+        ``allow_panels=False`` leaves out LOINC panel codes: use it for a single result, which
+        holds one value rather than the panel's members.
+        """
         out = [
             FhirCoding(
                 system=system_uri(c.system),
@@ -166,14 +170,15 @@ class Terminology:
                 display_en=self.english(c),
             )
         ]
-        out.extend(self.equivalents(c))
+        out.extend(self.equivalents(c, allow_panels))
         return out
 
-    def equivalents(self, c: Coding) -> list[FhirCoding]:
+    def equivalents(self, c: Coding, allow_panels: bool = True) -> list[FhirCoding]:
         out: list[FhirCoding] = []
         if c.system == LAB_FI:
             row = self._labfi.get(c.code)
-            if row and row["mapping_status"] == "APPROVED" and row["loinc_code"]:
+            usable = row and row["mapping_status"] == "APPROVED" and row["loinc_code"]
+            if usable and (allow_panels or not row.get("loinc_is_panel")):
                 out.append(FhirCoding(LOINC, row["loinc_code"], row["loinc_display"] or None))
         elif c.system == ICD10_FI and self.is_who_icd10(c.code):
             out.append(FhirCoding(ICD10_WHO, c.code, self.title(ICD10_WHO, c.code)))
@@ -190,6 +195,11 @@ class Terminology:
             if fc.system == LOINC:
                 return fc
         return None
+
+    def is_loinc_panel(self, code: str) -> bool:
+        """True when the Kuntaliitto code is mapped to a LOINC panel code."""
+        row = self._labfi.get(code)
+        return bool(row and row.get("loinc_is_panel"))
 
     def lab_mapping_status(self, code: str) -> str | None:
         row = self._labfi.get(code)

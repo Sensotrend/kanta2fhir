@@ -293,7 +293,7 @@ tests/  tests/fixtures/{real,synthetic}/
    - Composition author = the author of the latest record entry of the stay; identifier = that document's id.
 8. ✅ (done 2026-11-18) Final validation **with a terminology server**, fixes, documentation of accepted warnings; CLI polish, golden tests, README. Notes:
    - All 6 documents (real export: EPS + 2 lab reports; synthetic export: EPS, lab report, discharge report) validate with 0 errors against tx.fhir.org. Every warning falls into one of four accepted categories (unknown Finnish code systems, eHDSI value sets not on tx.fhir.org, the LOINC panel mapping, a validator note on ambiguous profiles). See `docs/VALIDATION.md`; `tools/validation_summary.py` flags any new kind of warning.
-   - The LOINC panel warning is kept as accepted: Athena does not mark panels, so leaving panel codes out would need a separate panel list (possible follow-up).
+   - LOINC panels (fixed 2026-11-19): Athena marks panels through "Panel contains" relationships. `labfi.csv` has a `loinc_is_panel` column (48 panels), and result Observations leave panel codes out while orders keep them.
    - Golden-file tests (`tests/golden/`, regenerated with `tools/update_golden.py`) cover all document types for the four fixtures. They are built without the local title cache, so they do not depend on `vocab/`.
 
 ## 5. Out of scope (for now)

@@ -738,11 +738,6 @@
                   }
                 ]
               }
-            },
-            {
-              "system": "http://loinc.org",
-              "code": "24351-9",
-              "display": "Protein electrophoresis panel - Serum or Plasma"
             }
           ],
           "text": "S -Proteiini, fraktiot"
@@ -1288,11 +1283,6 @@
                   }
                 ]
               }
-            },
-            {
-              "system": "http://loinc.org",
-              "code": "34534-8",
-              "display": "12 lead EKG panel"
             },
             {
               "system": "urn:oid:1.2.246.10.123456.1.2022",

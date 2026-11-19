@@ -33,12 +33,6 @@ ACCEPTED: list[tuple[str, str, str]] = [
         "bindings are preferred, not required.",
     ),
     (
-        r"is a panel \(Panel\): its results go in hasMember or component",
-        "LOINC panel used for a single result",
-        "FinOMOP maps two Finnish tests (2522 protein electrophoresis, 1270 EKG) to LOINC panel "
-        "codes while the Finnish result is one text value; a mapping-granularity limitation.",
-    ),
-    (
         r"Found multiple matching profiles for .* among choices",
         "Ambiguous profile choice (validator note)",
         "The validator cannot pick between a base profile and a derived one for a reference; the "

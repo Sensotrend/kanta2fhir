@@ -303,7 +303,9 @@ class LabReportBuilder:
         profile: str = PROFILES["Observation"],
     ) -> JSON:
         """A lab result Observation (also used by the Patient Summary with another profile)."""
-        code = codeable_concept(r.code, self.t)
+        # A single result never carries a LOINC panel code: a panel's results belong in
+        # hasMember/component, but the Kanta result is one value (e.g. a statement text).
+        code = codeable_concept(r.code, self.t, allow_panels=False)
         if code is not None:
             for local in r.local_codes:
                 code["coding"].append(fhir_coding(self.t.codings(local)[0]))
